@@ -31,8 +31,8 @@ ng build && npx cap sync && npx cap open ios   # iOS simulator
 
 |Decision          |Choice                                   |Rationale                                                      |
 |------------------|-----------------------------------------|---------------------------------------------------------------|
-|Frontend framework|Angular 20 (standalone components)       |Required by assessment                                         |
-|Mobile shell      |Capacitor 6                              |Required by assessment                                         |
+|Frontend framework|Angular 21 (standalone components)       |Required by assessment                                         |
+|Mobile shell      |Capacitor 8                              |Required by assessment                                         |
 |UI components     |Ionic Framework                          |Required by assessment                                         |
 |State management  |Angular Signals                          |Modern Angular default, simpler than NgRx for this scope       |
 |Styling           |Ionic CSS utilities + minimal custom SCSS|Mobile-native look, no Tailwind                                |
@@ -40,6 +40,9 @@ ng build && npx cap sync && npx cap open ios   # iOS simulator
 |AI chat           |Anthropic Claude API via backend proxy   |Streaming via SSE, never expose API key to client              |
 |Data format       |Mock JSON data served by API             |Realistic portfolio data, designed to demo financial formatting|
 |TypeScript        |Strict mode ON                           |`strict: true` in tsconfig, no `any`                           |
+|Linting           |ESLint + angular-eslint                  |`no-explicit-any` enforced, Angular best practices             |
+|Visual testing    |Playwright                               |Screenshot snapshots at mobile viewport, catches UI regressions|
+|Design system     |Ionic CSS variables + custom tokens      |Defined in `.claude/skills/design-system.md` and `theme/variables.scss`|
 
 ## Coding Conventions
 

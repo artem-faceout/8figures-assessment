@@ -1,4 +1,4 @@
-# Client — Angular 20 + Capacitor 6 + Ionic
+# Client — Angular 21 + Capacitor 6 + Ionic
 
 ## Quick Start
 ```bash
@@ -32,6 +32,29 @@ npx cap open ios            # Open in Xcode
 - iOS dev: `npx cap open ios` → Run in Xcode
 - WebView origin: `capacitor://localhost` — server CORS must allow this
 - To test API on simulator: use machine's local IP, not localhost
+
+## ESLint
+
+- Config: `eslint.config.js` (flat config format)
+- `@typescript-eslint/no-explicit-any: error` — enforced, no exceptions
+- Run: `ng lint` or `npx eslint .`
+- Must pass clean before every commit
+
+## Visual Testing (Playwright)
+
+- Config: `playwright.config.ts`
+- Tests: `e2e/visual/*.spec.ts` — tagged with `@visual`
+- Viewport: 375x812 (iPhone 13 Mini), 3x scale
+- Run: `npx playwright test --grep @visual`
+- Update baselines: `npx playwright test --grep @visual --update-snapshots`
+- Baselines committed to git in `e2e/visual/*.spec.ts-snapshots/`
+- First run after new screen: creates baseline automatically
+
+## Theme
+
+- `src/theme/variables.scss` — Ionic CSS variable overrides (colors, fonts)
+- Imported in `src/styles.scss` before Ionic core CSS
+- Design tokens defined in `.claude/skills/design-system.md`
 
 ## Environment Files
 
