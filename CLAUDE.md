@@ -113,6 +113,9 @@ client/src/app/
 - DO NOT forget to test Capacitor build after major UI changes — WebView ≠ browser
 - DO NOT use px for spacing — use Ionic CSS utilities or rem
 - DO NOT commit feature code without running `commands/post-feature.md` quality gate first
+- DO NOT do heavy computation on the main thread — use Web Workers for >5ms operations
+- DO NOT update signals per-chunk during streaming — batch via requestAnimationFrame
+- DO NOT use sync I/O in async FastAPI handlers — use aiofiles or asyncio.to_thread
 
 ## AI Agent Workflow
 

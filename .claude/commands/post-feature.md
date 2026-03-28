@@ -60,12 +60,17 @@ Run the stack-specific review for all changed code. Every item must pass.
    - Structured logging (no `print()`)
    - Proper error handling with custom exceptions
 
-### Phase 4: Architecture Review (blocking)
+### Phase 4: Architecture & Performance Review (blocking)
 Run the architecture section of `skills/code-review-checklist.md`:
 - Layer violations (component → service → data, never backwards)
 - Single responsibility
 - State management (discriminated unions, computed for derived state)
 - Error handling completeness (loading/error/success states)
+
+Run performance checklist from `skills/performance-patterns.md`:
+- No heavy computation on main thread (use Web Workers if >5ms)
+- User input debounced, lists virtualized, streaming batched
+- Server async discipline, client reuse, background tasks
 
 ### Phase 5: Design Review (if UI changed)
 Run `commands/design-review.md`:
