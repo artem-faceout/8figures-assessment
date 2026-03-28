@@ -23,10 +23,16 @@ Propose implementation approach:
 
 Present plan, wait for confirmation before coding.
 
-### Phase 3: Implement
-Build in small slices, following the senior patterns:
+### Phase 3: Implement (TDD)
+Build using TDD cycles per `skills/tdd-workflow.md`. For each slice:
 
-**Client code must use (per `skills/angular-senior-review.md`):**
+1. **RED** — Write a failing test that defines the expected behavior
+   - Client tests: `skills/angular-testing.md` (Testing Library + Jest)
+   - Server tests: `skills/fastapi-testing.md` (pytest + httpx)
+2. **GREEN** — Write minimum code to make it pass
+3. **REFACTOR** — Apply senior patterns, clean up
+
+**Client senior patterns (per `skills/angular-senior-review.md`):**
 - `ChangeDetectionStrategy.OnPush` on every component
 - `signal()`, `computed()`, `input()`, `output()` — not decorators
 - `@if` / `@for` / `@defer` control flow
@@ -35,13 +41,15 @@ Build in small slices, following the senior patterns:
 - Ionic components for all UI (per `skills/figma-to-ionic.md`)
 - Design tokens from `skills/design-system.md`
 
-**Server code must use (per `skills/fastapi-senior-review.md`):**
+**Server senior patterns (per `skills/fastapi-senior-review.md`):**
 - `Depends()` for dependency injection
 - `async` throughout, no blocking calls
 - Pydantic v2 patterns with `Field()` descriptions
 - `pydantic-settings` for configuration
 - Structured logging
 - Custom exception handlers
+
+**Slicing order:** data model → service logic → API endpoint → component behavior → UI rendering
 
 ### Phase 4: Quality Gate
 **DO NOT COMMIT until this phase passes.**

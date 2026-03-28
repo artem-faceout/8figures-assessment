@@ -27,6 +27,13 @@ SERVER_CHANGED=$(git diff --cached --name-only -- 'server/' | head -1)
 if [ -n "$CLIENT_CHANGED" ]; then
   echo -e "\n${BOLD}Client checks:${NC}"
 
+  # Tests
+  if (cd client && npx jest --passWithNoTests 2>/dev/null); then
+    pass "Jest tests"
+  else
+    fail "Tests failed — run 'cd client && npx jest' to see errors"
+  fi
+
   # ESLint
   if (cd client && npx ng lint --quiet 2>/dev/null); then
     pass "ESLint"
@@ -52,6 +59,13 @@ fi
 # ── Server checks ────────────────────────────────────────────────────
 if [ -n "$SERVER_CHANGED" ]; then
   echo -e "\n${BOLD}Server checks:${NC}"
+
+  # Tests
+  if (cd server && source .venv/bin/activate && pytest --tb=short -q 2>/dev/null); then
+    pass "pytest"
+  else
+    fail "Tests failed — run 'cd server && pytest -v' to see errors"
+  fi
 
   # Find all changed Python files
   CHANGED_PY=$(git diff --cached --name-only -- 'server/*.py' 'server/**/*.py')

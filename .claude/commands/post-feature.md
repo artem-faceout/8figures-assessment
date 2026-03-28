@@ -5,7 +5,21 @@ After a feature is implemented and before committing. This is the full quality g
 
 ## Workflow
 
-### Phase 1: Automated Checks (blocking)
+### Phase 1: Tests (blocking)
+All tests must pass. If any fail, fix before continuing.
+
+```bash
+# Client
+cd client && npx jest                   # All unit tests
+cd client && npx jest --coverage        # Verify >80% coverage on business logic
+
+# Server
+cd server && source .venv/bin/activate
+pytest -v                               # All tests
+pytest --cov                            # Verify >80% coverage
+```
+
+### Phase 2: Automated Checks (blocking)
 These must all pass. If any fail, fix before continuing.
 
 ```bash
@@ -20,7 +34,7 @@ python -m py_compile main.py            # Syntax check
 # Compile-check all changed .py files
 ```
 
-### Phase 2: Senior Code Review (blocking)
+### Phase 3: Senior Code Review (blocking)
 Run the stack-specific review for all changed code. Every item must pass.
 
 **If client code changed:**
@@ -46,14 +60,14 @@ Run the stack-specific review for all changed code. Every item must pass.
    - Structured logging (no `print()`)
    - Proper error handling with custom exceptions
 
-### Phase 3: Architecture Review (blocking)
+### Phase 4: Architecture Review (blocking)
 Run the architecture section of `skills/code-review-checklist.md`:
 - Layer violations (component → service → data, never backwards)
 - Single responsibility
 - State management (discriminated unions, computed for derived state)
 - Error handling completeness (loading/error/success states)
 
-### Phase 4: Design Review (if UI changed)
+### Phase 5: Design Review (if UI changed)
 Run `commands/design-review.md`:
 - Ionic component mapping correct
 - Design system tokens used (not hardcoded values)
@@ -61,14 +75,14 @@ Run `commands/design-review.md`:
 - Loading/empty/error states present
 - Mobile viewport tested (375px)
 
-### Phase 5: Visual Snapshots (if UI changed)
+### Phase 6: Visual Snapshots (if UI changed)
 ```bash
 cd client && npx playwright test --grep @visual
 ```
 - If new screen: baselines created automatically, review them
 - If existing screen: compare against baseline, update if intentional
 
-### Phase 6: Commit
+### Phase 7: Commit
 Only after all phases pass:
 - Stage changed files
 - Commit with area prefix and descriptive message
