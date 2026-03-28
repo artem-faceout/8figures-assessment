@@ -15,9 +15,9 @@ Whenever displaying money, percentages, or financial metrics in the UI.
 
 ## Color coding
 
-- Positive gain/change: `--ion-color-success` (#2DD36F)
-- Negative loss/change: `--ion-color-danger` (#EB445A)
-- Zero/neutral: default text color
+- Positive gain/change: `--color-gain` (#F7931A gold) with text-shadow glow `0px 0px 10px rgba(247,147,26,0.5)`
+- Negative loss/change: `--color-loss` (#EF4444 red)
+- Zero/neutral: `--color-text-secondary` (#888888)
 
 ## Angular pipes
 
@@ -31,4 +31,6 @@ Create custom pipes in `shared/pipes/`:
 
 - Money values: RIGHT-aligned in lists/tables
 - Ticker/name: LEFT-aligned
-- Use monospace font for numbers where they appear in columns (alignment matters)
+- Use JetBrains Mono Bold (`--font-mono`) for all dollar amounts and percentages
+- Use Space Grotesk Bold (`--font-heading`) for ticker symbols
+- Use JetBrains Mono Regular at 10px for company names under tickers

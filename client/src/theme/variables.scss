@@ -1,17 +1,63 @@
+// 8FIGURES Design System — extracted from Figma
+// Dark luxury fintech theme with gold accent
+
 :root {
-  --ion-color-primary: #3880ff;
-  --ion-color-primary-shade: #3171e0;
-  --ion-color-primary-tint: #4c8dff;
+  // Core backgrounds
+  --ion-background-color: #030304;
+  --ion-card-background: #0a0a0a;
+  --ion-item-background: #0a0a0a;
+  --ion-toolbar-background: rgba(3, 3, 4, 0.6);
+  --ion-tab-bar-background: #131315;
 
-  --ion-color-success: #2dd36f;
-  --ion-color-danger: #eb445a;
-  --ion-color-warning: #ffc409;
-  --ion-color-medium: #92949c;
+  // Text
+  --ion-text-color: #f2f2f2;
+  --ion-text-color-step-400: #888888;
+  --ion-text-color-step-600: #a1a1aa;
 
-  --ion-background-color: #f4f5f8;
-  --ion-card-background: #ffffff;
+  // Accent (mapped to Ionic primary)
+  --ion-color-primary: #f7931a;
+  --ion-color-primary-rgb: 247, 147, 26;
+  --ion-color-primary-shade: #d97e16;
+  --ion-color-primary-tint: #f89e31;
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary-contrast-rgb: 0, 0, 0;
 
-  --ion-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  // Semantic
+  --ion-color-success: #f7931a; // Gain = gold in this design
+  --ion-color-success-rgb: 247, 147, 26;
+  --ion-color-success-contrast: #000000;
+  --ion-color-danger: #ef4444;
+  --ion-color-danger-rgb: 239, 68, 68;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-warning: #e9c400;
+  --ion-color-warning-rgb: 233, 196, 0;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-medium: #888888;
+  --ion-color-medium-rgb: 136, 136, 136;
+  --ion-color-medium-contrast: #000000;
 
-  --font-monospace: 'SF Mono', 'Roboto Mono', 'Courier New', monospace;
+  // Borders
+  --ion-border-color: #1f1f1f;
+
+  // Fonts
+  --ion-font-family: 'Inter', sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  // Custom tokens
+  --color-accent: #f7931a;
+  --color-accent-muted: rgba(247, 147, 26, 0.8);
+  --color-accent-subtle: rgba(247, 147, 26, 0.2);
+  --color-accent-glow: rgba(247, 147, 26, 0.5);
+  --color-accent-bg: rgba(247, 147, 26, 0.05);
+  --color-surface: #0a0a0a;
+  --color-surface-elevated: #131315;
+  --color-surface-overlay: rgba(255, 255, 255, 0.05);
+  --color-border: #1f1f1f;
+  --color-border-accent: rgba(247, 147, 26, 0.2);
+  --color-text-secondary: #888888;
+  --color-text-muted: #a1a1aa;
+  --color-text-warm: #dbc2ae;
+  --color-gain: #f7931a;
+  --color-loss: #ef4444;
 }

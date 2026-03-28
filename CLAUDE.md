@@ -67,7 +67,7 @@ ng build && npx cap sync && npx cap open ios   # iOS simulator
 - Safe area handling: use Ionic's built-in support, don't manually add padding
 - Touch targets minimum 44x44pt
 - Financial numbers: right-aligned, monospace where appropriate
-- Gain = green (#2DD36F), Loss = red (#EB445A), Neutral = medium text
+- Gain = gold (#F7931A) with glow, Loss = red (#EF4444), Neutral = medium text (#888)
 
 ### Python / Backend
 
