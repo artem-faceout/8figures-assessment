@@ -32,51 +32,21 @@ Update `docs/api-contract.md` with all endpoints this feature needs:
 
 **Check:** Does this endpoint already exist? Don't duplicate — extend or note the change.
 
-### 4. Write Client Task Spec
-Update `.claude/context/client-task.md`:
-- **Scope:** which screens, components, services to build
-- **Dependencies:** which endpoints from api-contract.md, which models from data-models.md
-- **Implementation slices:** ordered TDD slices, following the pattern:
-  1. TypeScript interfaces from data-models.md
-  2. Service that calls the API endpoint
-  3. Component that uses the service
-  4. UI rendering with Ionic components
-  5. Financial formatting, gain/loss colors
-  6. Loading/error/empty states
-  7. Streaming display (if applicable)
-- **Acceptance criteria:** concrete checklist of what "done" looks like
-- **Notes:** design references, edge cases, anything non-obvious
-
-### 5. Write Server Task Spec
-Update `.claude/context/server-task.md`:
-- **Scope:** which endpoints, services, models to build
-- **Dependencies:** which endpoints from api-contract.md, which models from data-models.md
-- **Implementation slices:** ordered TDD slices, following the pattern:
-  1. Pydantic models from data-models.md
-  2. Mock data / data layer
-  3. Service with business logic
-  4. Router with endpoint(s)
-  5. Error handling (custom exceptions, edge cases)
-  6. Streaming (if applicable)
-- **Acceptance criteria:** concrete checklist of what "done" looks like
-- **Notes:** external API details, data constraints, anything non-obvious
-
-### 6. Review & Confirm
+### 4. Review & Confirm
 Present to the user:
 - Summary of what was defined
 - Data models (fields and types)
 - API endpoints (paths and shapes)
-- Client slices (count and scope)
-- Server slices (count and scope)
 
 Wait for user approval before they launch client/server sessions.
 
 ## Output
 - `docs/data-models.md` — updated with feature models
 - `docs/api-contract.md` — updated with feature endpoints
-- `.claude/context/client-task.md` — ready for client session
-- `.claude/context/server-task.md` — ready for server session
 - User has reviewed and approved
 
+## How Client/Server Sessions Use This
+Each session reads `docs/api-contract.md` and `docs/data-models.md` as shared contracts. The user provides the feature spec directly in chat — no task files needed.
+
 ## Critical Rule
-Client and server sessions must NOT modify the contract or data models. If they discover something is wrong or missing, they stop and flag it. Only the prep session changes these files.
+Client and server sessions must NOT modify the contract or data models. If they discover something is wrong or incomplete, they stop and flag it. Only the prep session changes these files.

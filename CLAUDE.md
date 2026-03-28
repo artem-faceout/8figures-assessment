@@ -124,8 +124,8 @@ Every feature goes through this pipeline:
 
 ### Three-session model
 1. **Prep session** (`commands/prepare-feature.md`) — takes feature description, produces API contract (`docs/api-contract.md`), data models (`docs/data-models.md`), and task specs for client and server sessions
-2. **Client session** — reads `docs/api-contract.md` + `.claude/context/client-task.md`, builds frontend
-3. **Server session** — reads `docs/api-contract.md` + `.claude/context/server-task.md`, builds backend
+2. **Client session** — user provides spec in chat, agent reads `docs/api-contract.md` + `docs/data-models.md`, builds frontend
+3. **Server session** — user provides spec in chat, agent reads `docs/api-contract.md` + `docs/data-models.md`, builds backend
 
 Client and server sessions run in parallel. Both build against the shared contract. Neither modifies the contract — if something is wrong, stop and flag it.
 

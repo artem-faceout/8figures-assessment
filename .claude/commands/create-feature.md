@@ -4,21 +4,20 @@
 Full feature creation from task description to committed, reviewed code.
 
 ### Input
-- Read your session task spec: `.claude/context/client-task.md` OR `.claude/context/server-task.md`
-- Read the shared contract: `docs/api-contract.md` and `docs/data-models.md`
-- These files are populated by the prep session (`commands/prepare-feature.md`)
+- Feature spec provided by the user in chat
+- Shared contracts: `docs/api-contract.md` and `docs/data-models.md` (populated by prep session)
 
 ### Phase 1: Understand
-1. Read your task spec — scope, slices, acceptance criteria
+1. Read the user's feature spec from chat
 2. Read the API contract — what endpoints you build/consume
 3. Read the data models — what types/interfaces to create
 4. Read related existing code to understand current patterns
 
 ### Phase 2: Plan
-Confirm the implementation slices from your task spec. Adjust if needed:
-- Do the slices still make sense given the current code?
-- Are there existing components/services to reuse?
-- Any edge cases the prep session missed?
+Propose implementation approach:
+- Break into TDD slices
+- Identify components/services to create or reuse
+- Note edge cases, loading/error/empty states
 
 If the API contract or data models are wrong/incomplete — **stop and flag it**. Don't improvise. Only the prep session changes those files.
 
