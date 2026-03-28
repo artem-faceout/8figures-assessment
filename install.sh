@@ -95,6 +95,13 @@ ok "Playwright Chromium installed"
 
 cd ..
 
+# ── Git hooks ────────────────────────────────────────────────────────
+
+step "Configuring git hooks"
+
+git config core.hooksPath .githooks
+ok "Pre-commit hook enabled (lint, types, build checks run on every commit)"
+
 # ── Verify builds ────────────────────────────────────────────────────
 
 step "Verifying builds"

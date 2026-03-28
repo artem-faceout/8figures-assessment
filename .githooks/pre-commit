@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 8FIGURES Pre-commit Hook
+# Runs automated quality gates before every commit.
+# Fails fast — first failure blocks the commit.
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+pass() { echo -e "  ${GREEN}✓${NC} $1"; }
+fail() { echo -e "  ${RED}✗${NC} $1"; exit 1; }
+
+echo -e "${BOLD}Running pre-commit checks...${NC}"
+
+# ── Load nvm if available ────────────────────────────────────────────
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# ── Detect what changed ──────────────────────────────────────────────
+CLIENT_CHANGED=$(git diff --cached --name-only -- 'client/' | head -1)
+SERVER_CHANGED=$(git diff --cached --name-only -- 'server/' | head -1)
+
+# ── Client checks ────────────────────────────────────────────────────
+if [ -n "$CLIENT_CHANGED" ]; then
+  echo -e "\n${BOLD}Client checks:${NC}"
+
+  # ESLint
+  if (cd client && npx ng lint --quiet 2>/dev/null); then
+    pass "ESLint"
+  else
+    fail "ESLint failed — run 'cd client && ng lint' to see errors"
+  fi
+
+  # TypeScript
+  if (cd client && npx tsc --noEmit 2>/dev/null); then
+    pass "TypeScript"
+  else
+    fail "TypeScript errors — run 'cd client && npx tsc --noEmit' to see them"
+  fi
+
+  # Build
+  if (cd client && npx ng build 2>/dev/null); then
+    pass "Angular build"
+  else
+    fail "Build failed — run 'cd client && ng build' to see errors"
+  fi
+fi
+
+# ── Server checks ────────────────────────────────────────────────────
+if [ -n "$SERVER_CHANGED" ]; then
+  echo -e "\n${BOLD}Server checks:${NC}"
+
+  # Find all changed Python files
+  CHANGED_PY=$(git diff --cached --name-only -- 'server/*.py' 'server/**/*.py')
+
+  if [ -n "$CHANGED_PY" ]; then
+    # Compile check each changed file
+    ALL_PASS=true
+    for pyfile in $CHANGED_PY; do
+      if python3 -m py_compile "$pyfile" 2>/dev/null; then
+        pass "Compile: $pyfile"
+      else
+        echo -e "  ${RED}✗${NC} Compile: $pyfile"
+        ALL_PASS=false
+      fi
+    done
+
+    if [ "$ALL_PASS" = false ]; then
+      fail "Python compilation errors found"
+    fi
+  fi
+fi
+
+# ── All passed ───────────────────────────────────────────────────────
+echo -e "\n${GREEN}${BOLD}All pre-commit checks passed.${NC}\n"
