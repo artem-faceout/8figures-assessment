@@ -1,39 +1,73 @@
 # Skill: Code Review Checklist
 
 ## When to use
+After implementing any feature, before committing. This is the top-level checklist — it delegates to stack-specific reviews for depth.
 
-After implementing any feature, before committing. Run through this checklist.
+## Review Flow
 
-## TypeScript / Angular
+1. **Surface checks** (this file) — lint, types, formatting, obvious issues
+2. **Stack-specific review** — run the relevant skill:
+   - Angular/Ionic code → `skills/angular-senior-review.md`
+   - FastAPI/Python code → `skills/fastapi-senior-review.md`
+3. **Architecture check** (bottom of this file) — layer violations, responsibility, patterns
+4. **Design check** — if UI changed, run `commands/design-review.md`
 
+## Surface Checks
+
+### TypeScript / Angular
+- [ ] `ng lint` passes clean — zero warnings, zero errors
+- [ ] `npx tsc --noEmit` — zero type errors
 - [ ] No `any` types anywhere — search for `any` in all .ts files
 - [ ] All components are standalone (no NgModules)
-- [ ] `inject()` used instead of constructor injection
-- [ ] Signals used for component state (not plain properties)
-- [ ] Services are properly injected and typed
-- [ ] No business logic in component templates
-- [ ] Lazy loading configured for feature routes
+- [ ] Imports are clean (no unused imports)
 
-## Ionic / Mobile
-
-- [ ] All UI uses Ionic components (ion-card, ion-list, ion-item, etc.)
+### Ionic / Mobile
+- [ ] All UI uses Ionic components — no raw HTML divs for layout
 - [ ] Touch targets are 44x44pt minimum
-- [ ] Safe areas handled (no content hidden behind notch/home indicator)
-- [ ] Tested in browser at mobile viewport (375px width)
-- [ ] Financial numbers properly formatted (2 decimal places, $ prefix, commas)
+- [ ] Financial numbers formatted per `skills/financial-data-formatting.md`
 - [ ] Gain/loss colors correct (green positive, red negative)
 
-## Backend
-
-- [ ] All endpoints use Pydantic models
-- [ ] Async handlers
-- [ ] CORS configured for dev origins
+### Backend
+- [ ] `python -m py_compile` passes on all changed Python files
+- [ ] All endpoints use Pydantic models for request/response
 - [ ] No API keys in source code
+- [ ] Type hints on every function
 
-## General
-
-- [ ] No console.log left in code (use proper logging if needed)
+### General
+- [ ] No `console.log` / `print()` left in code
 - [ ] No commented-out code
-- [ ] Imports are clean (no unused imports)
+- [ ] No TODO comments without a linked task
 - [ ] File naming follows convention
-- [ ] Git commit message is descriptive with proper prefix
+- [ ] Git commit message is descriptive with area prefix
+
+## Architecture Checks
+
+### Layer Violations
+- [ ] Components don't call data layer directly — they go through services
+- [ ] Services don't import from components
+- [ ] Dumb components (shared/) don't inject services
+- [ ] Routers don't contain business logic — they call services
+- [ ] Services don't import from routers
+
+### Single Responsibility
+- [ ] Each component does ONE thing — if it has multiple responsibilities, split it
+- [ ] Each service handles ONE domain — PortfolioService doesn't handle chat
+- [ ] Each router file maps to ONE resource/domain
+- [ ] Templates don't contain logic — extract to computed signals
+
+### Reuse
+- [ ] Repeated UI patterns extracted to shared components
+- [ ] Repeated logic extracted to utility functions or services
+- [ ] No copy-paste code between features — find the abstraction
+
+### Error Handling
+- [ ] Every HTTP call has error handling (client and server side)
+- [ ] User sees meaningful feedback on errors — not blank screens or console errors
+- [ ] Streaming errors handled gracefully (error event + clean termination)
+
+### State Management
+- [ ] No global mutable state — everything flows through signals or DI
+- [ ] No redundant state — if it can be derived, use `computed()`
+- [ ] Loading/error/success states modeled explicitly — not boolean flags
+  - **Good:** `state = signal<'idle' | 'loading' | 'error' | 'success'>('idle')`
+  - **Bad:** `isLoading = signal(false); hasError = signal(false);`

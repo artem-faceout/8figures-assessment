@@ -1,21 +1,52 @@
 # Command: Review and Fix
 
 ## Workflow
-Review existing code for quality issues and fix them.
+Full code review at senior/principal engineer level. Checks surface issues, stack-specific patterns, and architecture.
 
 ### Steps
 
-1. **Lint check** — Run `ng lint` and fix all errors
-2. **Type check** — Run `npx tsc --noEmit` and fix all type errors
-3. **Review checklist** — Go through `skills/code-review-checklist.md` file by file
-4. **Mobile check** — Verify Ionic components are used correctly
-5. **Financial formatting** — Verify against `skills/financial-data-formatting.md`
-6. **Fix issues** — Apply fixes
-7. **Commit** — `fix: <description of what was fixed>`
+1. **Automated checks**
+   - Run `cd client && ng lint` → fix all errors
+   - Run `cd client && npx tsc --noEmit` → fix all type errors
+   - Run `cd server && source .venv/bin/activate && python -m py_compile main.py` → verify no syntax errors
 
-### Common findings
-- `any` types that slipped through
-- Missing error handling on API calls
-- Console.logs left in code
-- Non-Ionic HTML elements used for layout
-- Missing loading states
+2. **Surface review** — go through `skills/code-review-checklist.md` surface checks section
+
+3. **Angular senior review** (if client code changed)
+   - Run through every item in `skills/angular-senior-review.md`
+   - Pay special attention to: OnPush, signal patterns, @if/@for control flow, input()/output() functions, smart/dumb separation, lazy loading
+   - Check the reference example at the bottom — does our code match that quality?
+
+4. **FastAPI senior review** (if server code changed)
+   - Run through every item in `skills/fastapi-senior-review.md`
+   - Pay special attention to: Depends() injection, async discipline, Pydantic v2 patterns, proper error handling, type hints
+   - Check the reference example at the bottom — does our code match that quality?
+
+5. **Architecture review** — go through `skills/code-review-checklist.md` architecture checks section
+   - Layer violations
+   - Single responsibility
+   - Reuse opportunities
+   - Error handling completeness
+   - State management patterns
+
+6. **Design review** (if UI changed) — run `commands/design-review.md`
+
+7. **Fix issues** — apply fixes, categorize by severity:
+   - 🔴 Must fix: type errors, lint failures, security issues, architecture violations
+   - 🟡 Should fix: missing patterns (OnPush, Depends), junior-level code
+   - 🟢 Nice to fix: naming improvements, minor refactors
+
+8. **Re-verify** — re-run automated checks after fixes
+
+9. **Commit** — `fix: <description of what was fixed>`
+
+### Common senior-level findings
+- Components missing `ChangeDetectionStrategy.OnPush`
+- Using `@Input()` decorator instead of `input()` signal function
+- Using `*ngIf` / `*ngFor` instead of `@if` / `@for`
+- Manual subscribe without `takeUntilDestroyed`
+- Services imported directly instead of using `Depends()`
+- Blocking I/O inside async handlers
+- Boolean flags for state instead of discriminated union signals
+- Business logic in components instead of services
+- Missing loading/error states
