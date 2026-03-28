@@ -110,6 +110,7 @@ client/src/app/
 - DO NOT make the AI chat call the API directly from Angular — always proxy through server
 - DO NOT forget to test Capacitor build after major UI changes — WebView ≠ browser
 - DO NOT use px for spacing — use Ionic CSS utilities or rem
+- DO NOT commit feature code without running `commands/post-feature.md` quality gate first
 
 ## AI Agent Workflow
 
