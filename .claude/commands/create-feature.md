@@ -4,22 +4,23 @@
 Full feature creation from task description to committed, reviewed code.
 
 ### Input
-Read the current task from `.claude/context/current-task.md`
+- Read your session task spec: `.claude/context/client-task.md` OR `.claude/context/server-task.md`
+- Read the shared contract: `docs/api-contract.md` and `docs/data-models.md`
+- These files are populated by the prep session (`commands/prepare-feature.md`)
 
 ### Phase 1: Understand
-1. Read task description, acceptance criteria, and any referenced designs
-2. Read related existing code to understand current patterns
-3. Identify which layers are affected (client, server, or both)
+1. Read your task spec — scope, slices, acceptance criteria
+2. Read the API contract — what endpoints you build/consume
+3. Read the data models — what types/interfaces to create
+4. Read related existing code to understand current patterns
 
 ### Phase 2: Plan
-Propose implementation approach:
-- Which components to create/modify (follow `skills/create-angular-component.md`)
-- Which services needed
-- Which API endpoints needed (follow `skills/create-api-endpoint.md`)
-- Data model changes (TypeScript types + Pydantic models)
-- State management approach (which signals, computed values)
-- Loading/error/empty states
-- Edge cases
+Confirm the implementation slices from your task spec. Adjust if needed:
+- Do the slices still make sense given the current code?
+- Are there existing components/services to reuse?
+- Any edge cases the prep session missed?
+
+If the API contract or data models are wrong/incomplete — **stop and flag it**. Don't improvise. Only the prep session changes those files.
 
 Present plan, wait for confirmation before coding.
 

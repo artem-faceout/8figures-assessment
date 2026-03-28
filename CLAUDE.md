@@ -122,7 +122,15 @@ client/src/app/
 
 Every feature goes through this pipeline:
 
-1. **Plan** — Read task context in `.claude/context/`, propose approach, identify edge cases
+### Three-session model
+1. **Prep session** (`commands/prepare-feature.md`) — takes feature description, produces API contract (`docs/api-contract.md`), data models (`docs/data-models.md`), and task specs for client and server sessions
+2. **Client session** — reads `docs/api-contract.md` + `.claude/context/client-task.md`, builds frontend
+3. **Server session** — reads `docs/api-contract.md` + `.claude/context/server-task.md`, builds backend
+
+Client and server sessions run in parallel. Both build against the shared contract. Neither modifies the contract — if something is wrong, stop and flag it.
+
+### Within each session
+1. **Plan** — Read task spec + contract, confirm slices, identify edge cases
 1. **Implement (TDD)** — RED: write failing test → GREEN: make it pass → REFACTOR: apply senior patterns. Per `skills/tdd-workflow.md`
 1. **Quality Gate** — Run `commands/post-feature.md`: tests, lint, types, build, senior review, architecture review, design review, visual snapshots
 1. **Verify** — All tests pass, build clean, runs in browser, types are strict
