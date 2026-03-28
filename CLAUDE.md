@@ -42,6 +42,8 @@ ng build && npx cap sync && npx cap open ios   # iOS simulator
 |TypeScript        |Strict mode ON                           |`strict: true` in tsconfig, no `any`                           |
 |Linting           |ESLint + angular-eslint                  |`no-explicit-any` enforced, Angular best practices             |
 |Visual testing    |Playwright                               |Screenshot snapshots at mobile viewport, catches UI regressions|
+|Unit testing (FE) |Jest + Testing Library                   |Behavior-focused component tests, TDD workflow                 |
+|Unit testing (BE) |pytest + httpx                           |Async tests, 80% coverage threshold                           |
 |Design system     |Ionic CSS variables + custom tokens      |Defined in `.claude/skills/design-system.md` and `theme/variables.scss`|
 
 ## Coding Conventions
@@ -117,9 +119,9 @@ client/src/app/
 Every feature goes through this pipeline:
 
 1. **Plan** — Read task context in `.claude/context/`, propose approach, identify edge cases
-1. **Implement** — Follow skills in `.claude/skills/`, write code in small slices
-1. **Self-Review** — Run through `.claude/skills/code-review-checklist.md` before marking done
-1. **Verify** — Build passes, linter clean, runs in browser, types are strict
+1. **Implement (TDD)** — RED: write failing test → GREEN: make it pass → REFACTOR: apply senior patterns. Per `skills/tdd-workflow.md`
+1. **Quality Gate** — Run `commands/post-feature.md`: tests, lint, types, build, senior review, architecture review, design review, visual snapshots
+1. **Verify** — All tests pass, build clean, runs in browser, types are strict
 
 ## Non-Obvious Context
 

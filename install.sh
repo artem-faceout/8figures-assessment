@@ -104,14 +104,17 @@ ok "Pre-commit hook enabled (lint, types, build checks run on every commit)"
 
 # ── Verify builds ────────────────────────────────────────────────────
 
-step "Verifying builds"
+step "Verifying builds and tests"
 
 cd client
-npx ng build --configuration=production 2>/dev/null
-ok "Angular production build successful"
+npx jest --passWithNoTests 2>/dev/null
+ok "Client tests pass"
 
 npx ng lint 2>/dev/null
 ok "ESLint passes clean"
+
+npx ng build --configuration=production 2>/dev/null
+ok "Angular production build successful"
 
 cd ..
 
@@ -119,6 +122,10 @@ cd server
 source .venv/bin/activate
 python -m py_compile main.py
 ok "Server compiles without errors"
+
+pytest --tb=short -q 2>/dev/null
+ok "Server tests pass"
+
 deactivate
 cd ..
 
@@ -130,8 +137,10 @@ echo "  Start client:  cd client && ng serve"
 echo "  Open browser:  http://localhost:4200"
 echo "  API docs:      http://localhost:8000/docs"
 echo ""
-echo "  Run lint:      cd client && ng lint"
-echo "  Run visual tests: cd client && npx playwright test --grep @visual"
+echo "  Client tests:  cd client && npx jest --watch"
+echo "  Server tests:  cd server && pytest -v"
+echo "  Lint:          cd client && ng lint"
+echo "  Visual tests:  cd client && npx playwright test --grep @visual"
 echo ""
 if [ ! -f "server/.env" ] || grep -q "your-key-here" server/.env 2>/dev/null; then
   echo -e "  ${YELLOW}⚠ Don't forget to add your ANTHROPIC_API_KEY to server/.env${NC}"

@@ -56,6 +56,16 @@ npx cap open ios            # Open in Xcode
 - Imported in `src/styles.scss` before Ionic core CSS
 - Design tokens defined in `.claude/skills/design-system.md`
 
+## Testing (Jest + Testing Library)
+
+- Config: `jest.config.ts` (uses `jest-preset-angular`)
+- Setup: `setup-jest.ts` (zoneless env + jest-dom matchers)
+- Test files: alongside source — `feature.component.spec.ts` next to `feature.component.ts`
+- Use `@testing-library/angular` (`render`, `screen`) — NOT raw TestBed queries
+- Run: `npx jest` / `npx jest --watch` / `npx jest --coverage`
+- TDD workflow: RED (failing test) → GREEN (make it pass) → REFACTOR
+- Coverage target: >80% on business logic
+
 ## Environment Files
 
 - `src/environments/environment.ts` — dev (localhost:8000)

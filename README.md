@@ -44,11 +44,25 @@ npx cap open ios
 # Select simulator in Xcode, click Run
 ```
 
-### Linting & Testing
+### Testing
 ```bash
+# Client unit tests (Jest + Testing Library)
 cd client
-ng lint                              # ESLint (strict, no-any enforced)
-npx playwright test --grep @visual   # Visual snapshot tests
+npx jest                             # Run all tests
+npx jest --watch                     # Watch mode (TDD)
+npx jest --coverage                  # Coverage report
+
+# Server tests (pytest)
+cd server && source .venv/bin/activate
+pytest -v                            # Run all tests
+pytest --cov                         # Coverage report
+
+# Visual snapshot tests (Playwright)
+cd client
+npx playwright test --grep @visual
+
+# Linting
+cd client && ng lint                 # ESLint (strict, no-any enforced)
 ```
 
 ## Architecture

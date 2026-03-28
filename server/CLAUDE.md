@@ -41,6 +41,16 @@ server/
 - Never commit `.env` — it's in `.gitignore`
 - Streaming responses use `StreamingResponse` with `text/event-stream`
 
+## Testing (pytest)
+
+- Config: `pyproject.toml` (asyncio_mode = auto)
+- Fixtures: `tests/conftest.py` (async httpx client)
+- All tests async — uses `pytest-asyncio`
+- Run: `pytest -v` / `pytest --cov` / `pytest --cov --cov-report=html`
+- Coverage target: >80% (enforced in pyproject.toml)
+- Mock external APIs (Anthropic) — never call real API in tests
+- Test structure: `tests/test_<module>.py` mirroring source
+
 ## AI Integration
 
 - Use `anthropic` Python SDK
