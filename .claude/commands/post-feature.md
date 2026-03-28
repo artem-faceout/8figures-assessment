@@ -87,7 +87,35 @@ cd client && npx playwright test --grep @visual
 - If new screen: baselines created automatically, review them
 - If existing screen: compare against baseline, update if intentional
 
-### Phase 7: Commit
+### Phase 7: Contract Drift Check (blocking)
+Verify implementation matches the shared contracts:
+
+**If server code changed:**
+1. Read `docs/api-contract.md` — for every endpoint defined:
+   - Does a matching router exist with the correct path and method?
+   - Does the response shape match the contract? (field names, types, nesting)
+   - Are error status codes and conditions implemented as specified?
+   - If streaming: does the SSE format match? (data prefix, DONE sentinel, error events)
+2. Read `docs/data-models.md` — for every model defined:
+   - Does a matching Pydantic model exist?
+   - Do field names, types, and validation rules match?
+   - Are computed fields derived as specified?
+
+**If client code changed:**
+1. Read `docs/api-contract.md` — for every endpoint the client calls:
+   - Does the service call the correct path and method?
+   - Does the TypeScript interface match the response shape in the contract?
+   - Are error status codes handled as documented?
+2. Read `docs/data-models.md` — for every model the client uses:
+   - Does the TypeScript interface have matching fields? (camelCase equivalent)
+   - Are types correct? (number vs string, optional vs required)
+
+**If drift found:**
+- If implementation is correct and contract is outdated → flag for prep session to update contract
+- If contract is correct and implementation is wrong → fix the implementation
+- NEVER silently accept drift — it breaks the parallel session model
+
+### Phase 8: Commit
 Only after all phases pass:
 - Stage changed files
 - Commit with area prefix and descriptive message
