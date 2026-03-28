@@ -36,9 +36,21 @@ Full code review at senior/principal engineer level. Checks surface issues, stac
    - 🟡 Should fix: missing patterns (OnPush, Depends), junior-level code
    - 🟢 Nice to fix: naming improvements, minor refactors
 
-8. **Re-verify** — re-run automated checks after fixes
+8. **Root cause & skill feedback** — for every 🔴 and 🟡 finding:
+   - **Classify:** one-off (typo, wrong variable) or pattern (missing state, wrong async, forgot loading)?
+   - **If pattern:** find which skill should have caught it:
+     - Missing Angular pattern → update `skills/angular-senior-review.md`
+     - Missing FastAPI pattern → update `skills/fastapi-senior-review.md`
+     - Missing test pattern → update `skills/angular-testing.md` or `skills/fastapi-testing.md`
+     - Missing performance pattern → update `skills/performance-patterns.md`
+     - Architecture issue → update `skills/code-review-checklist.md`
+     - No skill covers it → add to `skills/code-review-checklist.md`
+   - **If same pattern appears 3+ times:** escalate to `CLAUDE.md` "Common Mistakes To Avoid"
+   - **One-offs:** just fix, no skill update needed
 
-9. **Commit** — `fix: <description of what was fixed>`
+9. **Re-verify** — re-run automated checks and tests after fixes
+
+10. **Commit** — `fix: <description of what was fixed>`
 
 ### Common senior-level findings
 - Components missing `ChangeDetectionStrategy.OnPush`

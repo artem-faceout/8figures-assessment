@@ -116,6 +116,7 @@ client/src/app/
 - DO NOT do heavy computation on the main thread — use Web Workers for >5ms operations
 - DO NOT update signals per-chunk during streaming — batch via requestAnimationFrame
 - DO NOT use sync I/O in async FastAPI handlers — use aiofiles or asyncio.to_thread
+- DO NOT fix a pattern bug without updating the skill that should have prevented it — see `commands/fix-bug.md`
 
 ## AI Agent Workflow
 

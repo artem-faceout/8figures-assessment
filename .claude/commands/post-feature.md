@@ -98,7 +98,14 @@ Only after all phases pass:
 - 🟡 **Fix before PR:** missing loading states, junior patterns, incomplete error handling
 - 🟢 **Track for later:** naming improvements, optional performance optimizations
 
+## Skill Feedback Loop
+After fixing 🔴 and 🟡 findings, run root cause analysis (see `commands/review-and-fix.md` step 8):
+- Classify: one-off or pattern?
+- If pattern: update the skill that should have prevented it
+- If 3+ occurrences: escalate to CLAUDE.md
+
 ## Output
 - List of findings by severity
 - All 🔴 and 🟡 items fixed
+- Skills updated if pattern bugs found
 - Clean commit with all checks passing
