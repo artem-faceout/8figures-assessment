@@ -1,4 +1,5 @@
 import {
+  AfterViewChecked,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -6,6 +7,7 @@ import {
   OnInit,
   ViewChild,
   computed,
+  effect,
   inject,
   input,
   signal,
@@ -31,7 +33,7 @@ import type { ChatConfig, ChatMessage, SuggestionChip } from '@app/core/models/c
   templateUrl: './chat.page.html',
   styleUrl: './chat.page.scss',
 })
-export class ChatPage implements OnInit, OnDestroy {
+export class ChatPage implements OnInit, OnDestroy, AfterViewChecked {
   private readonly chatService = inject(ChatService);
   private readonly portfolioService = inject(PortfolioService);
   private readonly onboardingService = inject(OnboardingService);
@@ -52,6 +54,8 @@ export class ChatPage implements OnInit, OnDestroy {
 
   readonly inputText = signal('');
   private resolvedConfig: ChatConfig | null = null;
+  private needsScroll = false;
+  private lastMessageCount = 0;
 
   readonly isModal = computed(() =>
     this.resolvedConfig?.mode === 'common' || this.resolvedConfig?.mode === 'asset'
@@ -61,6 +65,23 @@ export class ChatPage implements OnInit, OnDestroy {
     if (!this.resolvedConfig) return [];
     return getSuggestionChips(this.resolvedConfig.mode, this.resolvedConfig.persona);
   });
+
+  constructor() {
+    // Auto-scroll whenever messages change (new message or streaming content)
+    effect(() => {
+      const msgs = this.messages();
+      if (msgs.length > 0) {
+        this.needsScroll = true;
+      }
+    });
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.needsScroll) {
+      this.needsScroll = false;
+      this.scrollToBottom();
+    }
+  }
 
   ngOnInit(): void {
     // Config comes from either modal input or router state
@@ -101,8 +122,8 @@ export class ChatPage implements OnInit, OnDestroy {
     if (!text || !this.canSend()) return;
 
     this.inputText.set('');
+    // sendMessage adds user msg + placeholder assistant msg, effect handles scroll
     await this.chatService.sendMessage(text);
-    this.scrollToBottom();
   }
 
   onChipTap(chip: SuggestionChip): void {
@@ -136,11 +157,12 @@ export class ChatPage implements OnInit, OnDestroy {
   }
 
   private scrollToBottom(): void {
-    requestAnimationFrame(() => {
-      const el = this.messageList?.nativeElement;
-      if (el) {
-        el.scrollTop = el.scrollHeight;
-      }
-    });
+    const el = this.messageList?.nativeElement;
+    if (!el) return;
+    if (typeof el.scrollTo === 'function') {
+      el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+    } else {
+      el.scrollTop = el.scrollHeight;
+    }
   }
 }
