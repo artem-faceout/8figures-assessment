@@ -266,4 +266,69 @@ Client parses and strips this from the displayed message, extracts the JSON, and
 
 ---
 
+## Dashboard & Asset Detail Feature
+
+### GET /api/v1/portfolio/{ticker}/history
+
+**Description:** Returns generated historical price data for an asset. Server produces a plausible random walk from the asset's `current_price` with ticker-specific volatility. Data is regenerated per request but seeded by ticker for visual consistency.
+
+**Query params:**
+
+| Param | Type | Required | Default | Values |
+|---|---|---|---|---|
+| range | string | no | `1M` | `1W`, `1M`, `3M`, `1Y`, `ALL` |
+
+**Response (200):**
+```json
+{
+  "data": {
+    "ticker": "AAPL",
+    "range": "1M",
+    "points": [
+      { "timestamp": "2026-02-28T16:00:00Z", "price": 189.30 },
+      { "timestamp": "2026-03-01T16:00:00Z", "price": 191.15 },
+      "..."
+    ]
+  },
+  "meta": { "timestamp": "2026-03-30T10:00:00Z" }
+}
+```
+
+**Errors:**
+- 404 `ASSET_NOT_FOUND`: Ticker not in mock data
+- 422 `VALIDATION_ERROR`: Invalid range value
+
+---
+
+### GET /api/v1/portfolio/insight
+
+**Description:** Returns an AI-generated insight about a random portfolio holding. Server picks a random holding from mock portfolio data, sends a short prompt to Claude asking for a factual 1-2 sentence insight with a headline, and returns the structured result. Single request/response (not streaming).
+
+**Request:** No body. No required headers.
+
+**Response (200):**
+```json
+{
+  "data": {
+    "ticker": "NVDA",
+    "asset_name": "NVIDIA Corporation",
+    "headline": "NVDA MOMENTUM ALERT",
+    "body": "NVIDIA is up 4.2% following the latest earnings report. Your position has grown by $1,240 this month."
+  },
+  "meta": { "timestamp": "2026-03-30T10:00:00Z" }
+}
+```
+
+**Errors:**
+- 500 `AI_SERVICE_ERROR`: Claude API failure (key missing, rate limit, etc.)
+
+**Server behavior:**
+1. Pick a random holding from `MOCK_PORTFOLIO.holdings`
+2. Build a short prompt: "Give a brief, factual market insight (1-2 sentences) about {name} ({ticker}) currently at ${current_price}, {daily_change_percent}% today. Return JSON with `headline` (5 words max, ALL CAPS) and `body` fields."
+3. Call Claude with `max_tokens=256`, `temperature=0.7`
+4. Parse the JSON response into `PortfolioInsight`
+5. Return wrapped in `ApiResponse[PortfolioInsight]`
+
+---
+
 *This file is updated by the prep session before client/server sessions begin.*
