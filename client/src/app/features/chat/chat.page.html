@@ -1,0 +1,100 @@
+<div class="chat-container">
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="header-content">
+      <div class="header-left">
+        <button class="header-button" (click)="onBack()" aria-label="Go back">
+          @if (isModal()) {
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M12 4L4 12M4 4l8 8" stroke="#f2f2f2" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          } @else {
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M10 12L6 8l4-4" stroke="#f2f2f2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          }
+        </button>
+        <span class="header-title">AI Assistant</span>
+      </div>
+      <div class="header-right">
+        <span class="status-dot"></span>
+        <span class="status-text">SYSTEM ONLINE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="message-list" #messageList>
+    <div class="messages-container">
+      @for (message of messages(); track trackByMessage($index, message)) {
+        <div class="message-group" [class.user]="message.role === 'user'" [class.assistant]="message.role === 'assistant'">
+          @if (message.role === 'assistant') {
+            <div class="ai-avatar">
+              <div class="avatar-inner"></div>
+            </div>
+          }
+          <div class="message-content">
+            <div class="bubble" [class.user-bubble]="message.role === 'user'" [class.ai-bubble]="message.role === 'assistant'">
+              @if (message.isStreaming && !message.content) {
+                <span class="thinking">{{ thinkingPhrase() }}</span>
+              } @else {
+                <span class="message-text">{{ message.content }}</span>
+              }
+            </div>
+
+            @if (message.isPortfolioReady && portfolio()) {
+              <app-portfolio-summary-card
+                [portfolio]="portfolio()!"
+                (ctaClick)="onPortfolioCta()" />
+            }
+
+            <div class="timestamp">
+              @if (message.role === 'user') {
+                {{ message.timestamp | date:'HH:mm' }} &middot; SENT
+              } @else {
+                {{ message.timestamp | date:'HH:mm' }}
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Input Shell -->
+  <div class="input-shell" [class.disabled]="isPortfolioReady()">
+    <div class="input-row">
+      <div class="input-wrapper">
+        <input
+          type="text"
+          class="message-input"
+          [value]="inputText()"
+          (input)="inputText.set($any($event.target).value)"
+          (keydown)="onKeyDown($event)"
+          [disabled]="!canSend()"
+          placeholder="Ask anything about your vault..."
+          autocomplete="off" />
+      </div>
+      <button
+        class="send-button"
+        [class.active]="inputText().trim().length > 0"
+        [disabled]="!canSend() || !inputText().trim()"
+        (click)="onSend()"
+        aria-label="Send message">
+        <svg width="19" height="16" viewBox="0 0 19 16" fill="none">
+          <path d="M1 1L18 8L1 15V9.5L12 8L1 6.5V1Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+
+    @if (!isPortfolioReady()) {
+      <div class="chips-row">
+        @for (chip of chips(); track chip.label) {
+          <button class="chip" (click)="onChipTap(chip)">
+            {{ chip.label }}
+          </button>
+        }
+      </div>
+    }
+  </div>
+</div>

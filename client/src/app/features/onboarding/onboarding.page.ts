@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { OnboardingService } from '@app/core/services/onboarding.service';
 import { OnboardingStep, ONBOARDING_TOTAL_STEPS } from '@app/core/models/onboarding.model';
+import type { ChatConfig } from '@app/core/models/chat.model';
 import { OnboardingHookComponent } from './components/hook/onboarding-hook.component';
 import { OnboardingPromiseComponent } from './components/promise/onboarding-promise.component';
 import { OnboardingBridgeComponent } from './components/bridge/onboarding-bridge.component';
@@ -33,7 +34,13 @@ export class OnboardingPage {
   readonly Step = OnboardingStep;
 
   onContinue(): void {
-    this.onboardingService.nextStep();
+    if (this.currentStep() === OnboardingStep.Bridge) {
+      const persona = this.onboardingService.investmentProfile() ?? 'beginner';
+      const config: ChatConfig = { mode: 'onboarding', persona };
+      this.router.navigate(['/chat'], { state: config });
+    } else {
+      this.onboardingService.nextStep();
+    }
   }
 
   onBack(): void {

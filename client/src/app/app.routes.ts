@@ -10,6 +10,11 @@ export const routes: Routes = [
     canActivate: [onboardingRedirectGuard],
   },
   {
+    path: 'chat',
+    loadComponent: () =>
+      import('./features/chat/chat.page').then(m => m.ChatPage),
+  },
+  {
     path: 'home',
     loadComponent: () =>
       import('./features/onboarding/components/home-placeholder.component').then(m => m.HomePlaceholderComponent),

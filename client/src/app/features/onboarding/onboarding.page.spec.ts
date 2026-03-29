@@ -67,8 +67,10 @@ describe('OnboardingPage', () => {
     // Select a card to enable Continue Journey
     await user.click(screen.getByText(/i have investments/i));
 
-    // Bridge → Paywall
+    // Bridge → navigate to /chat
     await user.click(screen.getByRole('button', { name: /continue journey/i }));
-    expect(screen.getByText(/unlock your financial edge/i)).toBeInTheDocument();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/chat'], {
+      state: { mode: 'onboarding', persona: 'experienced' },
+    });
   });
 });

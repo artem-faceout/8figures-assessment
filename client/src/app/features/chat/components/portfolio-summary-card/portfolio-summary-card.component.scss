@@ -1,0 +1,68 @@
+.portfolio-card {
+  background: rgba(53, 52, 55, 0.4);
+  border: 1px solid var(--color-border-accent);
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 12px;
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.card-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text-warm-chat);
+}
+
+.total-value {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-accent-highlight);
+}
+
+.holdings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.holding-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ticker {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-accent-highlight);
+}
+
+.value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-warm);
+}
+
+.cta-button {
+  width: 100%;
+  padding: 12px;
+  background: var(--gradient-accent);
+  border: none;
+  border-radius: 9999px;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-on-accent-button);
+  cursor: pointer;
+}

@@ -1,0 +1,19 @@
+<div class="portfolio-card">
+  <div class="card-header">
+    <span class="card-label">YOUR PORTFOLIO</span>
+    <span class="total-value">{{ portfolio().total_value | currency:'USD':'symbol':'1.0-0' }}</span>
+  </div>
+
+  <div class="holdings-list">
+    @for (holding of portfolio().holdings; track holding.ticker) {
+      <div class="holding-row">
+        <span class="ticker">{{ holding.ticker }}</span>
+        <span class="value">{{ holding.value | currency:'USD':'symbol':'1.0-0' }}</span>
+      </div>
+    }
+  </div>
+
+  <button class="cta-button" (click)="onCtaTap()">
+    See your dashboard &rarr;
+  </button>
+</div>
