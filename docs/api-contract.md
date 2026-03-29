@@ -104,4 +104,15 @@ This fetches `/openapi.json` from the running server and generates `src/app/core
 
 ---
 
+## Onboarding Feature
+
+**No new endpoints.** The onboarding flow is entirely client-side:
+- Screen navigation managed by Angular Signals in `OnboardingService`
+- User preferences persisted via `@capacitor/preferences` (local key-value storage)
+- Mock subscription "purchase" is client-only (no server validation)
+
+If a future feature needs to sync onboarding data to the server (e.g., investment profile for personalized AI responses), a new endpoint would be added here in a subsequent prep session.
+
+---
+
 *This file is updated by the prep session before client/server sessions begin.*

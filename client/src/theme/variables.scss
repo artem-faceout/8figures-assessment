@@ -1,20 +1,21 @@
 // 8FIGURES Design System — extracted from Figma
 // Dark luxury fintech theme with gold accent
+// Source of truth: .claude/skills/design-system.md
 
 :root {
-  // Core backgrounds
+  // ── Core Backgrounds ──
   --ion-background-color: #030304;
   --ion-card-background: #0a0a0a;
   --ion-item-background: #0a0a0a;
   --ion-toolbar-background: rgba(3, 3, 4, 0.6);
   --ion-tab-bar-background: #131315;
 
-  // Text
+  // ── Text (Ionic) ──
   --ion-text-color: #f2f2f2;
   --ion-text-color-step-400: #888888;
   --ion-text-color-step-600: #a1a1aa;
 
-  // Accent (mapped to Ionic primary)
+  // ── Accent / Primary (Ionic) ──
   --ion-color-primary: #f7931a;
   --ion-color-primary-rgb: 247, 147, 26;
   --ion-color-primary-shade: #d97e16;
@@ -22,7 +23,7 @@
   --ion-color-primary-contrast: #000000;
   --ion-color-primary-contrast-rgb: 0, 0, 0;
 
-  // Semantic
+  // ── Semantic (Ionic) ──
   --ion-color-success: #f7931a; // Gain = gold in this design
   --ion-color-success-rgb: 247, 147, 26;
   --ion-color-success-contrast: #000000;
@@ -36,28 +37,70 @@
   --ion-color-medium-rgb: 136, 136, 136;
   --ion-color-medium-contrast: #000000;
 
-  // Borders
+  // ── Borders (Ionic) ──
   --ion-border-color: #1f1f1f;
 
-  // Fonts
+  // ── Fonts ──
   --ion-font-family: 'Inter', sans-serif;
   --font-heading: 'Space Grotesk', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  // Custom tokens
+  // ── Accent / Brand ──
   --color-accent: #f7931a;
   --color-accent-muted: rgba(247, 147, 26, 0.8);
   --color-accent-subtle: rgba(247, 147, 26, 0.2);
   --color-accent-glow: rgba(247, 147, 26, 0.5);
   --color-accent-bg: rgba(247, 147, 26, 0.05);
-  --color-surface: #0a0a0a;
-  --color-surface-elevated: #131315;
-  --color-surface-overlay: rgba(255, 255, 255, 0.05);
-  --color-border: #1f1f1f;
-  --color-border-accent: rgba(247, 147, 26, 0.2);
-  --color-text-secondary: #888888;
-  --color-text-muted: #a1a1aa;
-  --color-text-warm: #dbc2ae;
+  --color-accent-bg-strong: rgba(247, 147, 26, 0.1);
+
+  // ── Semantic ──
   --color-gain: #f7931a;
   --color-loss: #ef4444;
+  --color-green: #4ade80; // Used ONLY in onboarding AI preview for gain percentages
+
+  // ── Surface ──
+  --color-background: #030304;
+  --color-background-alt: #050505;
+  --color-background-onboarding: #08090c;
+  --color-surface: #0a0a0a;
+  --color-surface-elevated: #131315;
+  --color-surface-card-alt: #0f1115;
+  --color-surface-overlay: rgba(255, 255, 255, 0.05);
+  --color-surface-overlay-10: rgba(255, 255, 255, 0.1);
+  --color-surface-frosted: rgba(32, 31, 33, 0.6);
+
+  // ── Borders ──
+  --color-border: #1f1f1f;
+  --color-border-alt: #2d2f36;
+  --color-border-accent: rgba(247, 147, 26, 0.2);
+  --color-border-accent-strong: rgba(247, 147, 26, 0.4);
+  --color-border-subtle: rgba(255, 255, 255, 0.05);
+  --color-border-white-10: rgba(255, 255, 255, 0.1);
+
+  // ── Text ──
+  --color-text-primary: #f2f2f2;
+  --color-text-white: #ffffff;
+  --color-text-secondary: #888888;
+  --color-text-muted: #a1a1aa;
+  --color-text-description: #a0a0a0;
+  --color-text-warm: #dbc2ae;
+  --color-text-warm-chat: #a38d7b;
+  --color-text-white-half: rgba(255, 255, 255, 0.5);
+  --color-text-white-40: rgba(255, 255, 255, 0.4);
+  --color-text-white-90: rgba(255, 255, 255, 0.9);
+  --color-text-accent: #f7931a;
+  --color-text-accent-highlight: #ffb874;
+  --color-text-on-accent: #603500;
+  --color-text-on-accent-button: #000000;
+  --color-text-on-gradient-button: #2d1600;
+  --color-text-chat-body: #e5e1e4;
+  --color-text-feature-list: #e5e1e4;
+
+  // ── Gradients ──
+  --gradient-accent: linear-gradient(135deg, #f7931a, #ffab4a);
+  --gradient-accent-text: linear-gradient(135deg, #f7931a, #ffab4a);
+  --gradient-hero-text: linear-gradient(to right, #f7931a, #ea580c 50%, #ffb874);
+  --gradient-cta-strong: linear-gradient(to right, #ea580c, #f7931a);
+  --gradient-surface: linear-gradient(145deg, #0f0f0f, #050505);
+  --gradient-divider: linear-gradient(to right, rgba(247, 147, 26, 0), rgba(247, 147, 26, 0.3));
 }

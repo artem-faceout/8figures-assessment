@@ -50,23 +50,43 @@ Wraps all successful responses (see `skills/api-contract-patterns.md`):
 
 ## Domain Models
 
-<!-- Prep session populates this section per feature -->
-<!-- Each model follows this template:
+### Onboarding (Client-Only)
 
-### ModelName
+**These models have NO server-side Pydantic equivalents.** They are client-only types defined in `core/models/onboarding.model.ts`. Documented here for cross-session reference.
 
-**Description:** What it represents
+#### OnboardingState
+
+**Description:** Tracks onboarding flow progression and user choices. Managed by `OnboardingService` using Signals.
 
 | Field | Type | Required | Validation | Description |
 |---|---|---|---|---|
-| field_name | type | yes/no | rules | what it is |
+| current_step | OnboardingStep | yes | 0–3 | Current screen index |
+| investment_profile | InvestmentProfile \| null | no | enum | User's selection on Bridge screen |
+| is_complete | boolean | yes | — | Whether onboarding has been finished |
 
-**Computed fields (derived, not stored):**
-| Field | Type | Derivation |
+#### OnboardingStep (enum)
+
+| Value | Label | Description |
 |---|---|---|
-| field_name | type | how it's computed |
+| 0 | Hook | Value proposition screen |
+| 1 | Promise | AI companion demo screen |
+| 2 | Bridge | Investment profile selection |
+| 3 | Paywall | Subscription gate |
 
--->
+#### InvestmentProfile (enum)
+
+| Value | Description |
+|---|---|
+| `'experienced'` | User has existing investments |
+| `'beginner'` | User is new to investing |
+
+#### StorageKeys (constants)
+
+| Key | Value Type | Description |
+|---|---|---|
+| `8f_onboarding_complete` | `'true'` \| absent | Onboarding finished flag |
+| `8f_investment_profile` | `'experienced'` \| `'beginner'` | Selected profile |
+| `8f_subscription_status` | `'trial'` \| `'active'` \| `'none'` | Mock subscription state |
 
 ---
 
