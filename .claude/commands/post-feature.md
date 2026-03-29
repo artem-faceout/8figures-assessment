@@ -80,12 +80,26 @@ Run `commands/design-review.md`:
 - Loading/empty/error states present
 - Mobile viewport tested (375px)
 
-### Phase 6: Visual Snapshots (if UI changed)
+### Phase 6: Visual Snapshots (always run)
+
+**For existing screens** (baseline already exists):
 ```bash
 cd client && npx playwright test --grep @visual
 ```
-- If new screen: baselines created automatically, review them
-- If existing screen: compare against baseline, update if intentional
+Tests compare against saved baselines. If they fail, either fix the regression or update with `--update-snapshots` if the change was intentional.
+
+**For new screens** (no baseline yet):
+1. Get the Figma screenshot: call `get_design_context` for the screen's node ID
+2. Open the running app at the route (375px viewport)
+3. Compare visually against the Figma screenshot — verify: layout, colors, typography, spacing, content hierarchy
+4. If it doesn't match Figma → fix implementation first, do NOT create a baseline from a broken screen
+5. Once it matches Figma → create the baseline:
+```bash
+cd client && npx playwright test --grep @visual --update-snapshots
+```
+6. Commit the baseline screenshot to git
+
+**The Figma screenshot is the source of truth for new screens. Playwright baselines capture the approved implementation for regression detection going forward.**
 
 ### Phase 7: Contract Drift Check (blocking)
 Verify implementation matches the shared contracts:

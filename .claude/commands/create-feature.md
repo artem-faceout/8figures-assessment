@@ -51,6 +51,8 @@ Build using TDD cycles per `skills/tdd-workflow.md`. For each slice:
 
 **Slicing order:** data model → service logic → API endpoint → component behavior → UI rendering
 
+**Visual tests:** When creating a new route/screen, add a Playwright visual test for it in `e2e/visual/screens.spec.ts`. Follow the pattern in `skills/visual-snapshot-testing.md`.
+
 ### Phase 4: Quality Gate
 **DO NOT COMMIT until this phase passes.**
 
