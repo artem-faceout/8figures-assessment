@@ -9,14 +9,15 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow-y: auto;
+  overflow: hidden;
   background: var(--color-background);
-  padding: 0 1.5rem;
 }
 
-.back-button-area {
-  padding: 1rem 0;
-  z-index: 1;
+// Fixed header — back button
+.fixed-header {
+  position: relative;
+  padding: 0.75rem 1.5rem;
+  z-index: 2;
 }
 
 .back-button {
@@ -32,13 +33,16 @@
   cursor: pointer;
 }
 
-.content {
+// Scrollable middle
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 1.5rem;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
-  z-index: 1;
-  padding-top: 1rem;
+  gap: 1.5rem;
 }
 
 .hero {
@@ -100,7 +104,7 @@
 .price {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: var(--color-text-chat-body);
 }
 
@@ -131,31 +135,47 @@
   span {
     font-family: var(--ion-font-family);
     font-weight: 500;
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 0.875rem;
+    line-height: 1.4;
     color: var(--color-text-feature-list);
   }
 }
 
-// CTA area
-.cta-area {
+.fine-print {
+  margin: 0;
+  padding-bottom: 1rem;
+  font-family: var(--ion-font-family);
+  font-weight: 400;
+  font-size: 0.625rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(219, 194, 174, 0.4);
+  text-align: center;
+  line-height: 1.625;
+}
+
+// Fixed footer — CTA + restore
+.fixed-footer {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem 0;
-  z-index: 1;
+  padding: 1rem 1.5rem;
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 2;
+  background: linear-gradient(to top, var(--color-background) 60%, transparent);
 }
 
 .cta-button {
   width: 100%;
-  padding: 1.25rem 2rem;
+  padding: 1rem 2rem;
   border: none;
   border-radius: 9999px;
   background: var(--gradient-cta-strong);
   color: var(--color-text-on-gradient-button);
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.125rem;
+  font-size: 1rem;
   letter-spacing: -0.45px;
   cursor: pointer;
   box-shadow: 0 0 30px rgba(247, 147, 26, 0.4);
@@ -183,12 +203,12 @@
 }
 
 .restore-link {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   background: none;
   border: none;
   font-family: var(--ion-font-family);
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   letter-spacing: 1.4px;
   text-transform: uppercase;
   color: var(--color-text-warm);
@@ -197,16 +217,4 @@
   min-height: 2.75rem;
   display: flex;
   align-items: center;
-}
-
-.fine-print {
-  margin-top: 2rem;
-  font-family: var(--ion-font-family);
-  font-weight: 400;
-  font-size: 0.625rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(219, 194, 174, 0.4);
-  text-align: center;
-  line-height: 1.625;
 }

@@ -8,32 +8,40 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 100%;
   overflow: hidden;
   background: var(--color-background-onboarding);
+}
+
+// Scrollable middle
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
   padding: 0 2rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
 .header {
-  padding-top: 3rem;
-  z-index: 1;
+  padding-top: 2rem;
 }
 
 .headline {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 2.25rem;
+  font-size: 2rem;
   line-height: 1.25;
   letter-spacing: -1.8px;
   color: var(--color-text-white);
-  margin: 0 0 1rem;
+  margin: 0 0 0.75rem;
 }
 
 .subtitle {
   font-family: var(--font-mono);
   font-weight: 400;
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 1.625;
   color: var(--color-text-description);
   margin: 0;
@@ -42,19 +50,18 @@
 .cards {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  z-index: 1;
+  gap: 1rem;
 }
 
 .selection-card {
   position: relative;
   display: flex;
   align-items: flex-start;
-  gap: 1.5rem;
-  padding: 2.0625rem;
+  gap: 1rem;
+  padding: 1.5rem;
   background: var(--color-surface-card-alt);
   border: 1px solid var(--color-border-alt);
-  border-radius: 2.5rem;
+  border-radius: 2rem;
   overflow: hidden;
   cursor: pointer;
   text-align: left;
@@ -84,7 +91,7 @@
 .card-title {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   line-height: 1.4;
   color: var(--color-text-white);
   margin: 0;
@@ -93,7 +100,7 @@
 .card-description {
   font-family: var(--font-mono);
   font-weight: 400;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   line-height: 1.25;
   color: var(--color-text-description);
   margin: 0;
@@ -110,12 +117,11 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 1.3125rem;
+  padding: 1rem;
   background: rgba(15, 17, 21, 0.8);
   backdrop-filter: blur(10px);
   border: 1px solid var(--color-border-alt);
   border-radius: 9999px;
-  z-index: 1;
 
   img {
     flex-shrink: 0;
@@ -132,21 +138,24 @@
   }
 }
 
-.footer {
-  padding: 1.5rem 0 2rem;
-  z-index: 1;
+// Fixed footer — CTA
+.fixed-footer {
+  position: relative;
+  padding: 1rem 2rem;
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 2;
 }
 
 .cta-button {
   width: 100%;
-  padding: 1.25rem;
+  padding: 1rem;
   border: none;
   border-radius: 9999px;
   background: var(--color-accent);
   color: var(--color-text-on-accent-button);
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.125rem;
+  font-size: 1rem;
   letter-spacing: -0.45px;
   cursor: pointer;
   box-shadow: 0 12px 32px rgba(247, 147, 26, 0.2);

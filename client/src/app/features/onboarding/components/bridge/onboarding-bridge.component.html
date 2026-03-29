@@ -6,56 +6,58 @@
     [size]="384" [opacity]="0.1" [blur]="32"
     bottom="49px" right="-80px" />
 
-  <div class="header">
-    <h1 class="headline">Let's set up your portfolio.</h1>
-    <p class="subtitle">Tell us where you are.</p>
+  <div class="scrollable-content">
+    <div class="header">
+      <h1 class="headline">Let's set up your portfolio.</h1>
+      <p class="subtitle">Tell us where you are.</p>
+    </div>
+
+    <div class="cards">
+      <button
+        class="selection-card"
+        [class.selected]="selectedProfile() === 'experienced'"
+        (click)="selectProfile('experienced')"
+        type="button">
+        <div class="card-icon">
+          <img src="assets/onboarding/icon-chart.svg" alt="" width="48" height="48" />
+        </div>
+        <div class="card-text">
+          <h3 class="card-title">I have investments</h3>
+          <p class="card-description">I'll tell the AI what I'm holding</p>
+        </div>
+        <img
+          src="assets/onboarding/corner-decoration-a.svg" alt=""
+          class="corner-decoration" width="90" height="90" loading="lazy" />
+      </button>
+
+      <button
+        class="selection-card"
+        [class.selected]="selectedProfile() === 'beginner'"
+        (click)="selectProfile('beginner')"
+        type="button">
+        <div class="card-icon">
+          <img src="assets/onboarding/icon-seedling.svg" alt="" width="48" height="50" />
+        </div>
+        <div class="card-text">
+          <h3 class="card-title">I'm just getting started</h3>
+          <p class="card-description">Help me build my first portfolio</p>
+        </div>
+        <img
+          src="assets/onboarding/corner-decoration-b.svg" alt=""
+          class="corner-decoration" width="100" height="60" loading="lazy" />
+      </button>
+    </div>
+
+    <div class="ai-chip">
+      <img src="assets/onboarding/icon-sparkle-alt.svg" alt="" width="22" height="22" />
+      <p>
+        Your answers help our engine curate tax-efficient strategies tailored to
+        your wealth stage.
+      </p>
+    </div>
   </div>
 
-  <div class="cards">
-    <button
-      class="selection-card"
-      [class.selected]="selectedProfile() === 'experienced'"
-      (click)="selectProfile('experienced')"
-      type="button">
-      <div class="card-icon">
-        <img src="assets/onboarding/icon-chart.svg" alt="" width="56" height="56" />
-      </div>
-      <div class="card-text">
-        <h3 class="card-title">I have investments</h3>
-        <p class="card-description">I'll tell the AI what I'm holding</p>
-      </div>
-      <img
-        src="assets/onboarding/corner-decoration-a.svg" alt=""
-        class="corner-decoration" width="90" height="90" loading="lazy" />
-    </button>
-
-    <button
-      class="selection-card"
-      [class.selected]="selectedProfile() === 'beginner'"
-      (click)="selectProfile('beginner')"
-      type="button">
-      <div class="card-icon">
-        <img src="assets/onboarding/icon-seedling.svg" alt="" width="56" height="59" />
-      </div>
-      <div class="card-text">
-        <h3 class="card-title">I'm just getting started</h3>
-        <p class="card-description">Help me build my first portfolio</p>
-      </div>
-      <img
-        src="assets/onboarding/corner-decoration-b.svg" alt=""
-        class="corner-decoration" width="100" height="60" loading="lazy" />
-    </button>
-  </div>
-
-  <div class="ai-chip">
-    <img src="assets/onboarding/icon-sparkle-alt.svg" alt="" width="22" height="22" />
-    <p>
-      Your answers help our engine curate tax-efficient strategies tailored to
-      your wealth stage.
-    </p>
-  </div>
-
-  <div class="footer">
+  <div class="fixed-footer">
     <button
       class="cta-button"
       [class.disabled]="!selectedProfile()"

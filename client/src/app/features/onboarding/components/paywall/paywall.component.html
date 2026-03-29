@@ -7,7 +7,7 @@
     bottom="-10%" right="-18%"
     color="rgba(246, 96, 24, 1)" />
 
-  <div class="back-button-area">
+  <div class="fixed-header">
     <button class="back-button" (click)="onBack()" aria-label="Go back">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -15,7 +15,7 @@
     </button>
   </div>
 
-  <div class="content">
+  <div class="scrollable-content">
     <div class="hero">
       <h1 class="hero-title">Unlock Your Financial Edge</h1>
       <p class="hero-subtitle">
@@ -40,9 +40,14 @@
         }
       </div>
     </div>
+
+    <p class="fine-print">
+      SECURED BY QUANTUM-RESISTANT PROTOCOLS<br />
+      CANCEL ANYTIME DURING TRIAL
+    </p>
   </div>
 
-  <div class="cta-area">
+  <div class="fixed-footer">
     <button
       class="cta-button"
       [disabled]="isPurchasing()"
@@ -57,11 +62,6 @@
     <button class="restore-link" (click)="onRestorePurchase()">
       RESTORE PURCHASE
     </button>
-
-    <p class="fine-print">
-      SECURED BY QUANTUM-RESISTANT PROTOCOLS<br />
-      CANCEL ANYTIME DURING TRIAL
-    </p>
   </div>
 </div>
 
