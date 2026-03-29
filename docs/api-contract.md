@@ -7,6 +7,7 @@ Single source of truth for all API endpoints. Both client and server sessions bu
 - Client consumes exactly what's defined here
 - Changes to this file must happen in the prep session, not during client/server sessions
 - If a session discovers the contract is wrong or incomplete, stop and flag it — don't improvise
+- All patterns follow `skills/api-contract-patterns.md`
 
 ---
 
@@ -14,22 +15,49 @@ Single source of truth for all API endpoints. Both client and server sessions bu
 
 - Dev: `http://localhost:8000`
 - All endpoints prefixed with `/api/v1`
+- OpenAPI spec: `http://localhost:8000/openapi.json`
 
-## Common Response Patterns
+## Response Envelope (all endpoints)
 
-### Error Response
+Every response uses the standard envelope from `skills/api-contract-patterns.md`:
+
+### Success
 ```json
 {
-  "detail": "Human-readable error message"
+  "data": { ... },
+  "meta": { "timestamp": "2026-03-29T10:00:00Z" }
 }
 ```
-Status codes: 400 (bad request), 404 (not found), 422 (validation), 500 (server error)
 
-### Streaming Response
-Media type: `text/event-stream`
-Format: `data: {"text": "chunk"}\n\n`
-Termination: `data: [DONE]\n\n`
-Error mid-stream: `data: {"error": "message"}\n\n`
+### Error
+```json
+{
+  "error": {
+    "code": "ERROR_CODE",
+    "message": "Human-readable description",
+    "details": {}
+  }
+}
+```
+
+### Streaming (SSE)
+```
+data: {"type": "chunk", "text": "..."}\n\n
+data: {"type": "done", "meta": {"timestamp": "..."}}\n\n
+data: {"type": "error", "error": {"code": "...", "message": "..."}}\n\n
+```
+
+---
+
+## Type Generation
+
+Pydantic models on the server are the source of truth. TypeScript types are auto-generated:
+
+```bash
+cd client && npm run generate:types
+```
+
+This fetches `/openapi.json` from the running server and generates `src/app/core/models/api.generated.ts`. Never hand-write TypeScript interfaces for API types — regenerate.
 
 ---
 
@@ -52,19 +80,20 @@ Error mid-stream: `data: {"error": "message"}\n\n`
 **Response (200):**
 ```json
 {
-  "field": "type — description"
+  "data": { ... },
+  "meta": { "timestamp": "..." }
 }
 ```
 
 **Errors:**
-- 400: when/why
-- 404: when/why
+- 400 `VALIDATION_ERROR`: when/why
+- 404 `RESOURCE_NOT_FOUND`: when/why
 
 -->
 
 ### GET /api/v1/health
 
-**Description:** Health check
+**Description:** Health check (does not use envelope — simple status)
 
 **Response (200):**
 ```json

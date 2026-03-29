@@ -15,25 +15,24 @@ When implementing or modifying the AI chat feature.
 
 ```python
 from fastapi.responses import StreamingResponse
-import anthropic
+from anthropic import AsyncAnthropic
+import json
+from datetime import datetime
 
 @router.post("/api/v1/chat")
-async def chat(request: ChatRequest):
-    client = anthropic.Anthropic()
-
+async def chat(request: ChatRequest, service: AIServiceDep):
     async def generate():
-        with client.messages.stream(
-            model="claude-sonnet-4-20250514",
-            max_tokens=1024,
-            messages=[{"role": "user", "content": request.message}],
-            system=build_system_prompt(request.portfolio_context)
-        ) as stream:
-            for text in stream.text_stream:
-                yield f"data: {json.dumps({'text': text})}\n\n"
-        yield "data: [DONE]\n\n"
+        try:
+            async for text in service.stream_chat(request.message, request.portfolio_context):
+                yield f"data: {json.dumps({'type': 'chunk', 'text': text})}\n\n"
+            yield f"data: {json.dumps({'type': 'done', 'meta': {'timestamp': datetime.utcnow().isoformat() + 'Z'}})}\n\n"
+        except Exception as e:
+            yield f"data: {json.dumps({'type': 'error', 'error': {'code': 'AI_SERVICE_ERROR', 'message': str(e)}})}\n\n"
 
     return StreamingResponse(generate(), media_type="text/event-stream")
 ```
+
+SSE events follow `skills/api-contract-patterns.md` — typed with `type` discriminator (`chunk`, `done`, `error`).
 
 ## Client side (Angular)
 
@@ -47,6 +46,12 @@ async def chat(request: ChatRequest):
 - Include current holdings summary in system prompt
 - Format: "User holds: AAPL (50 shares, $10,250), GOOGL (10 shares, $1,780)…"
 - This makes AI responses contextual to the user's actual portfolio
+
+## Related patterns
+
+- Chunk batching via `requestAnimationFrame`: see `skills/performance-patterns.md` → "Streaming Chunk Rendering"
+- Signal update discipline during streaming: see `skills/angular-senior-review.md` → "Signals" section
+- Server async discipline and backpressure: see `skills/fastapi-senior-review.md` → "Streaming (SSE)" section
 
 ## Checklist
 
