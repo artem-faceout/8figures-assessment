@@ -1,0 +1,69 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/dashboard" text="" color="light"></ion-back-button>
+    </ion-buttons>
+    @if (holding(); as h) {
+      <div class="header-info">
+        <ion-avatar class="header-avatar">
+          <span class="avatar-letter">{{ avatarLetter() }}</span>
+        </ion-avatar>
+        <div class="header-text">
+          <span class="header-name">{{ h.name }}</span>
+          <span class="header-meta">{{ h.ticker }} · {{ h.exchange }}</span>
+        </div>
+      </div>
+    }
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="detail-content" [fullscreen]="true">
+  @if (holding(); as h) {
+    <div class="detail-scroll">
+      <div class="price-hero">
+        <span class="current-price">{{ formattedPrice() }}</span>
+        <span class="price-change" [class]="changeClass()">{{ formattedChange() }}</span>
+      </div>
+
+      <app-price-chart
+        [points]="history()?.points ?? []"
+        [loading]="historyLoading()"
+        [error]="historyError()"
+      />
+
+      <div class="range-selector">
+        @for (range of timeRanges; track range) {
+          <button
+            class="range-pill"
+            [class.active]="selectedRange() === range"
+            (click)="onRangeSelect(range)"
+          >
+            {{ range }}
+          </button>
+        }
+      </div>
+
+      <app-metrics-grid
+        [metrics]="metrics()"
+        [loading]="metricsLoading()"
+      />
+
+      <div class="section-spacer"></div>
+
+      <app-position-card [holding]="h" />
+
+      <div class="bottom-spacer"></div>
+    </div>
+
+    <div class="ask-ai-container">
+      <ion-button
+        expand="block"
+        class="ask-ai-button"
+        (click)="onAskAi()"
+      >
+        <ion-icon name="sparkles" slot="start"></ion-icon>
+        Ask AI
+      </ion-button>
+    </div>
+  }
+</ion-content>

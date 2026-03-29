@@ -1,0 +1,30 @@
+<ion-card class="position-card">
+  <ion-card-content>
+    <div class="card-header">
+      <span class="card-title">Your position</span>
+    </div>
+    <div class="grid">
+      <div class="cell">
+        <span class="cell-label">SHARES</span>
+        <span class="cell-value">{{ holding().quantity }}</span>
+      </div>
+      <div class="cell">
+        <span class="cell-label">AVG COST</span>
+        <span class="cell-value">{{ formattedCostBasis() }}</span>
+      </div>
+      <div class="cell">
+        <span class="cell-label">TOTAL VALUE</span>
+        <span class="cell-value">{{ formattedValue() }}</span>
+      </div>
+      <div class="cell">
+        <span class="cell-label">TOTAL GAIN</span>
+        <span class="cell-value" [class.gain]="isGain()" [class.loss]="!isGain()">
+          {{ formattedGain() }}
+        </span>
+        <span class="gain-percent" [class.gain]="isGain()" [class.loss]="!isGain()">
+          {{ formattedGainPercent() }}
+        </span>
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>

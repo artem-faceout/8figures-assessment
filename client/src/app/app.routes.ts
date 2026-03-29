@@ -10,15 +10,46 @@ export const routes: Routes = [
     canActivate: [onboardingRedirectGuard],
   },
   {
-    path: 'chat',
+    path: 'tabs',
     loadComponent: () =>
-      import('./features/chat/chat.page').then(m => m.ChatPage),
+      import('./layouts/tabs/tabs.layout').then(m => m.TabsLayout),
+    canActivate: [onboardingGuard],
+    children: [
+      {
+        path: 'dashboard',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/dashboard/dashboard.page').then(
+                m => m.DashboardPage
+              ),
+          },
+          {
+            path: 'asset/:ticker',
+            loadComponent: () =>
+              import('./features/asset-detail/asset-detail.page').then(
+                m => m.AssetDetailPage
+              ),
+          },
+        ],
+      },
+      {
+        path: 'chat',
+        loadComponent: () =>
+          import('./features/chat/chat.page').then(m => m.ChatPage),
+      },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+    ],
   },
   {
-    path: 'home',
-    loadComponent: () =>
-      import('./features/onboarding/components/home-placeholder.component').then(m => m.HomePlaceholderComponent),
-    canActivate: [onboardingGuard],
+    path: 'chat',
+    redirectTo: 'tabs/chat',
+    pathMatch: 'full',
   },
   {
     path: '',

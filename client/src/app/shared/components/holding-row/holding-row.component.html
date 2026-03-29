@@ -1,0 +1,18 @@
+<ion-item
+  button
+  [detail]="false"
+  class="holding-row"
+  (click)="onTap()"
+>
+  <ion-avatar slot="start" class="ticker-avatar" [style.background]="avatarColor()">
+    <span class="avatar-letter">{{ avatarLetter() }}</span>
+  </ion-avatar>
+  <ion-label>
+    <h3 class="ticker-name">{{ holding().ticker }}</h3>
+    <p class="company-name">{{ holding().name }}</p>
+  </ion-label>
+  <ion-note slot="end" class="value-column">
+    <span class="holding-value">{{ formattedValue() }}</span>
+    <span class="daily-change" [class]="changeClass()">{{ formattedChange() }}</span>
+  </ion-note>
+</ion-item>

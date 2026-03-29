@@ -83,11 +83,26 @@ npx playwright test --grep @visual --ui
 - NEVER update baselines to make a failing test pass without reviewing the diff
 
 ## Workflow integration
-1. Implement screen per `figma-to-ionic.md`
-2. Run visual tests → creates baseline
-3. Review baseline screenshot — does it match the design?
-4. If yes, commit the baseline
-5. On subsequent changes, tests catch unintended visual regressions
+
+**This is mandatory for every UI feature. Do NOT skip visual testing.**
+
+The correct order is: implement → compare with Figma → iterate → lock baselines.
+
+1. **Implement screen** per `figma-to-ionic.md`
+2. **Write Playwright visual test** (route interception for API mocks, `setupPortfolio` helper for auth bypass)
+3. **Run test with `--update-snapshots`** → creates initial screenshot
+4. **Compare screenshot against Figma design** — open both side by side, check:
+   - Layout structure matches (spacing, alignment, hierarchy)
+   - Typography matches (sizes, weights, fonts)
+   - Colors match (gains/losses, accents, backgrounds)
+   - Component rendering (avatars, charts, cards, badges)
+   - Both viewports (iPhone 13 Mini 375x812, iPhone SE 320x568)
+5. **If mismatch → fix styling and repeat from step 3** until the screenshot matches Figma
+6. **Lock baselines** — run tests without `--update-snapshots` to verify they pass
+7. **Commit baselines** to git alongside the feature code
+8. On subsequent changes, tests catch unintended visual regressions
+
+**Critical:** Never update baselines to make a failing test pass without reviewing the diff AND comparing against Figma.
 
 ## Mock data for snapshots
 Visual tests should use deterministic mock data so screenshots are stable:

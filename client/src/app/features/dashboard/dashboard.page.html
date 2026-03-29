@@ -1,0 +1,38 @@
+<ion-content class="dashboard-content" [fullscreen]="true">
+  @if (portfolioService.portfolio(); as portfolio) {
+    <div class="dashboard-scroll">
+      <app-portfolio-summary [portfolio]="portfolio" />
+
+      <app-insight-card
+        [insight]="portfolioService.insight()"
+        [loading]="portfolioService.insightLoading()"
+        [error]="portfolioService.insightError()"
+      />
+
+      <div class="holdings-header">
+        <h2 class="holdings-title">HOLDINGS</h2>
+        <span class="view-all">VIEW ALL</span>
+      </div>
+
+      @for (holding of portfolio.holdings; track holding.ticker) {
+        <app-holding-row
+          [holding]="holding"
+          (tapped)="onHoldingTap($event)"
+        />
+      }
+
+      <div class="bottom-spacer"></div>
+    </div>
+  } @else {
+    <div class="empty-state">
+      <p class="empty-text">No holdings yet</p>
+      <p class="empty-subtext">Chat with AI to build your portfolio</p>
+    </div>
+  }
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="center">
+    <ion-fab-button class="chat-fab" (click)="onFabTap()">
+      <ion-icon name="sparkles"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

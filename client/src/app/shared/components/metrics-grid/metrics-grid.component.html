@@ -1,0 +1,37 @@
+<div class="grid">
+  @if (loading()) {
+    @for (i of [1, 2, 3, 4]; track i) {
+      <ion-card class="metric-tile">
+        <ion-card-content>
+          <ion-skeleton-text [animated]="true" class="skeleton-label"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" class="skeleton-value"></ion-skeleton-text>
+        </ion-card-content>
+      </ion-card>
+    }
+  } @else if (metrics(); as m) {
+    <ion-card class="metric-tile">
+      <ion-card-content>
+        <span class="metric-label">P/E RATIO</span>
+        <span class="metric-value">{{ peRatio() }}</span>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="metric-tile">
+      <ion-card-content>
+        <span class="metric-label">MARKET CAP</span>
+        <span class="metric-value">{{ m.market_cap }}</span>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="metric-tile">
+      <ion-card-content>
+        <span class="metric-label">DAY RANGE</span>
+        <span class="metric-value small">{{ dayRange() }}</span>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="metric-tile">
+      <ion-card-content>
+        <span class="metric-label">VOLUME</span>
+        <span class="metric-value">{{ m.volume }}</span>
+      </ion-card-content>
+    </ion-card>
+  }
+</div>

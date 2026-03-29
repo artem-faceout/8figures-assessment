@@ -48,6 +48,6 @@ export class OnboardingPage {
   }
 
   async onComplete(): Promise<void> {
-    await this.router.navigate(['/home']);
+    await this.router.navigate(['/tabs/dashboard']);
   }
 }

@@ -1,0 +1,68 @@
+.dashboard-content {
+  --background: var(--color-background);
+}
+
+.dashboard-scroll {
+  padding: 1rem 1rem 0;
+}
+
+.holdings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.holdings-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.125rem;
+  letter-spacing: 0.05em;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.view-all {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--color-accent);
+  text-transform: uppercase;
+}
+
+.bottom-spacer {
+  height: 5rem;
+}
+
+.chat-fab {
+  --background: var(--color-accent);
+  --color: #000;
+
+  ion-icon {
+    font-size: 1.5rem;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: 2rem;
+}
+
+.empty-text {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 0.5rem;
+}
+
+.empty-subtext {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}

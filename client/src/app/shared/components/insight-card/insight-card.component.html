@@ -1,0 +1,24 @@
+<ion-card class="insight-card">
+  <ion-card-content>
+    @if (loading()) {
+      <div class="skeleton-container">
+        <ion-skeleton-text [animated]="true" class="skeleton-headline"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" class="skeleton-line"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" class="skeleton-line short"></ion-skeleton-text>
+      </div>
+    } @else if (error()) {
+      <div class="error-state">
+        <span class="error-text">Insight unavailable</span>
+      </div>
+    } @else if (insight(); as ins) {
+      <div class="insight-content">
+        <div class="insight-header">
+          <ion-icon name="sparkles" class="sparkle-icon"></ion-icon>
+          <span class="headline">{{ ins.headline }}</span>
+        </div>
+        <p class="body">{{ ins.body }}</p>
+      </div>
+      <ion-icon name="chevron-forward" class="chevron"></ion-icon>
+    }
+  </ion-card-content>
+</ion-card>

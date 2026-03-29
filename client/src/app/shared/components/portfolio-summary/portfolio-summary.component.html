@@ -1,0 +1,24 @@
+<ion-card class="summary-card">
+  <ion-card-content>
+    <span class="label">TOTAL NET WORTH</span>
+    <div class="value-row">
+      <span class="total-value">{{ formattedTotal() }}</span>
+      <span class="change-badge" [class.gain]="isPositive()" [class.loss]="!isPositive()">
+        {{ formattedPercent() }}
+      </span>
+    </div>
+    <span class="daily-subtitle" [class.gain]="isPositive()" [class.loss]="!isPositive()">
+      {{ formattedChange() }}
+    </span>
+
+    <div class="bar-chart">
+      @for (bar of barData(); track bar.ticker) {
+        <div
+          class="bar"
+          [class.bar-highlight]="bar.isHighest"
+          [style.height.%]="bar.heightPercent"
+        ></div>
+      }
+    </div>
+  </ion-card-content>
+</ion-card>

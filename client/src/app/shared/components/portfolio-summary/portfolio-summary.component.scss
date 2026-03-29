@@ -1,0 +1,87 @@
+.summary-card {
+  --background: var(--color-surface);
+  border-radius: 1.5rem;
+  margin: 0 0 1rem;
+  border: 1px solid var(--color-border);
+}
+
+ion-card-content {
+  padding: 1.5rem;
+}
+
+.label {
+  font-family: var(--font-heading);
+  font-size: 0.625rem;
+  letter-spacing: 0.15em;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+}
+
+.value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.total-value {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 2.5rem;
+  color: var(--color-text-white);
+  letter-spacing: -0.02em;
+}
+
+.change-badge {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
+
+  &.gain {
+    color: var(--color-gain);
+    background: var(--color-accent-bg-strong);
+  }
+
+  &.loss {
+    color: var(--color-loss);
+    background: rgba(239, 68, 68, 0.1);
+  }
+}
+
+.daily-subtitle {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  margin-top: 0.25rem;
+
+  &.gain {
+    color: var(--color-gain);
+  }
+
+  &.loss {
+    color: var(--color-loss);
+  }
+}
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.375rem;
+  margin-top: 1.25rem;
+  height: 4rem;
+}
+
+.bar {
+  flex: 1;
+  min-height: 0.25rem;
+  border-radius: 0.25rem 0.25rem 0 0;
+  background: var(--color-surface-elevated);
+  transition: height 0.3s ease;
+
+  &.bar-highlight {
+    background: var(--color-accent);
+    box-shadow: 0 0 0.75rem var(--color-accent-glow);
+  }
+}

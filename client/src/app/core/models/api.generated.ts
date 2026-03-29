@@ -22,6 +22,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/portfolio/insight": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Portfolio Insight */
+        get: operations["get_portfolio_insight_api_v1_portfolio_insight_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/portfolio/{ticker}/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Price History */
+        get: operations["get_price_history_api_v1_portfolio__ticker__history_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/portfolio/{ticker}/metrics": {
         parameters: {
             query?: never;
@@ -80,6 +114,16 @@ export interface components {
         /** ApiResponse[AssetMetrics] */
         ApiResponse_AssetMetrics_: {
             data: components["schemas"]["AssetMetrics"];
+            meta?: components["schemas"]["Meta"];
+        };
+        /** ApiResponse[PortfolioInsight] */
+        ApiResponse_PortfolioInsight_: {
+            data: components["schemas"]["PortfolioInsight"];
+            meta?: components["schemas"]["Meta"];
+        };
+        /** ApiResponse[PriceHistory] */
+        ApiResponse_PriceHistory_: {
+            data: components["schemas"]["PriceHistory"];
             meta?: components["schemas"]["Meta"];
         };
         /** AssetContext */
@@ -229,7 +273,7 @@ export interface components {
              * Holdings
              * @description List of investment positions
              */
-            holdings: components["schemas"]["Holding"][];
+            holdings?: components["schemas"]["Holding"][];
             /**
              * Total Value
              * @description Sum of all holding values
@@ -246,6 +290,63 @@ export interface components {
              */
             daily_change_percent: number;
         };
+        /** PortfolioInsight */
+        PortfolioInsight: {
+            /**
+             * Ticker
+             * @description Which asset the insight is about
+             */
+            ticker: string;
+            /**
+             * Asset Name
+             * @description Full asset name
+             */
+            asset_name: string;
+            /**
+             * Headline
+             * @description Short ALL-CAPS headline
+             */
+            headline: string;
+            /**
+             * Body
+             * @description 1-2 sentence factual insight
+             */
+            body: string;
+        };
+        /** PriceHistory */
+        PriceHistory: {
+            /**
+             * Ticker
+             * @description Asset identifier
+             */
+            ticker: string;
+            /** @description Time range for this history */
+            range: components["schemas"]["TimeRange"];
+            /**
+             * Points
+             * @description Ordered price points (oldest first)
+             */
+            points: components["schemas"]["PricePoint"][];
+        };
+        /** PricePoint */
+        PricePoint: {
+            /**
+             * Timestamp
+             * Format: date-time
+             * @description Point in time for this price
+             */
+            timestamp: string;
+            /**
+             * Price
+             * @description Price at this timestamp
+             */
+            price: number;
+        };
+        /**
+         * TimeRange
+         * @enum {string}
+         */
+        TimeRange: "1W" | "1M" | "3M" | "1Y" | "ALL";
         /** ValidationError */
         ValidationError: {
             /** Location */
@@ -321,6 +422,60 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_portfolio_insight_api_v1_portfolio_insight_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_PortfolioInsight_"];
+                };
+            };
+        };
+    };
+    get_price_history_api_v1_portfolio__ticker__history_get: {
+        parameters: {
+            query?: {
+                /** @description Time range */
+                range?: components["schemas"]["TimeRange"];
+            };
+            header?: never;
+            path: {
+                ticker: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_PriceHistory_"];
                 };
             };
             /** @description Validation Error */
