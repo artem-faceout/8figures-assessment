@@ -128,6 +128,9 @@ After implementing any FastAPI/Python code. This catches patterns that separate 
 - [ ] Uses async generator (`async def generate()` + `yield`) — not sync
 - [ ] Includes `[DONE]` sentinel event for clean client-side termination
 
+## Architectural Principles
+- [ ] Run through `skills/architectural-principles.md` — SOLID, KISS, DRY, YAGNI, Separation of Concerns, Coupling/Cohesion
+
 ## Testing Considerations
 
 - [ ] Services are testable without FastAPI (plain Python classes)

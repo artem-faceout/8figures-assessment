@@ -49,16 +49,16 @@ After implementing any feature, before committing. This is the top-level checkli
 - [ ] Routers don't contain business logic — they call services
 - [ ] Services don't import from routers
 
-### Single Responsibility
-- [ ] Each component does ONE thing — if it has multiple responsibilities, split it
-- [ ] Each service handles ONE domain — PortfolioService doesn't handle chat
-- [ ] Each router file maps to ONE resource/domain
-- [ ] Templates don't contain logic — extract to computed signals
-
-### Reuse
-- [ ] Repeated UI patterns extracted to shared components
-- [ ] Repeated logic extracted to utility functions or services
-- [ ] No copy-paste code between features — find the abstraction
+### Architectural Principles
+Run through `skills/architectural-principles.md` review checklist (items 1–10). Key checks:
+- [ ] **KISS** — no unnecessary complexity or premature abstraction
+- [ ] **Single Responsibility** — each component/service/router does ONE thing
+- [ ] **Separation of Concerns** — logic lives in the correct layer
+- [ ] **DRY (rule of three)** — real duplication extracted, not premature
+- [ ] **YAGNI** — no speculative code or unused abstractions
+- [ ] **Open/Closed** — new variants don't require editing existing working code
+- [ ] **Dependency Inversion** — dependencies are swappable for testing
+- [ ] **Coupling/Cohesion** — features don't cross-import, modules are focused
 
 ### Error Handling
 - [ ] Every HTTP call has error handling (client and server side)

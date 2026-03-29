@@ -63,7 +63,7 @@ Run the stack-specific review for all changed code. Every item must pass.
 ### Phase 4: Architecture & Performance Review (blocking)
 Run the architecture section of `skills/code-review-checklist.md`:
 - Layer violations (component → service → data, never backwards)
-- Single responsibility
+- Architectural principles per `skills/architectural-principles.md` (SOLID, KISS, DRY, YAGNI, Separation of Concerns, Coupling/Cohesion)
 - State management (discriminated unions, computed for derived state)
 - Error handling completeness (loading/error/success states)
 

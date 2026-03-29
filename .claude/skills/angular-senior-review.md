@@ -68,6 +68,9 @@ After implementing any Angular/Ionic code. This catches patterns that separate s
 - [ ] Error handling uses a consistent pattern (e.g., error interceptor + toast notification)
 - [ ] Services are single-responsibility — PortfolioService doesn't also handle chat
 
+## Architectural Principles
+- [ ] Run through `skills/architectural-principles.md` — SOLID, KISS, DRY, YAGNI, Separation of Concerns, Coupling/Cohesion
+
 ## Routing
 
 - [ ] Feature routes are lazy-loaded via `loadComponent`

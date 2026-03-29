@@ -26,8 +26,7 @@ Full code review at senior/principal engineer level. Checks surface issues, stac
 
 5. **Architecture review** — go through `skills/code-review-checklist.md` architecture checks section
    - Layer violations
-   - Single responsibility
-   - Reuse opportunities
+   - Architectural principles per `skills/architectural-principles.md` (SOLID, KISS, DRY, YAGNI, Separation of Concerns, Coupling/Cohesion)
    - Error handling completeness
    - State management patterns
 
