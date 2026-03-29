@@ -33,13 +33,12 @@
 }
 
 .content {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 2rem;
   z-index: 1;
+  padding-top: 1rem;
 }
 
 .hero {
@@ -50,10 +49,10 @@
 .hero-title {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 3rem;
+  font-size: 2.5rem;
   line-height: 1.1;
   letter-spacing: -1.2px;
-  margin: 0 0 1.375rem;
+  margin: 0 0 0.75rem;
   background: var(--gradient-hero-text);
   background-clip: text;
   -webkit-background-clip: text;
@@ -63,8 +62,8 @@
 .hero-subtitle {
   font-family: var(--ion-font-family);
   font-weight: 300;
-  font-size: 1.125rem;
-  line-height: 1.625;
+  font-size: 0.9375rem;
+  line-height: 1.5;
   color: var(--color-text-warm);
   margin: 0;
 }
@@ -72,7 +71,7 @@
 // Pricing card
 .pricing-card {
   width: 100%;
-  padding: 2.0625rem;
+  padding: 1.5rem;
   background: var(--color-surface-frosted);
   backdrop-filter: blur(10px);
   border: 1px solid var(--color-border-accent-strong);
@@ -115,8 +114,8 @@
 .features {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding-top: 1.5rem;
+  gap: 1rem;
+  padding-top: 1rem;
 }
 
 .feature-row {
@@ -143,7 +142,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3rem 0 2rem;
+  padding: 2rem 0;
   z-index: 1;
 }
 
@@ -201,7 +200,7 @@
 }
 
 .fine-print {
-  margin-top: 3rem;
+  margin-top: 2rem;
   font-family: var(--ion-font-family);
   font-weight: 400;
   font-size: 0.625rem;
