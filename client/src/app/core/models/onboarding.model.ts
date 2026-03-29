@@ -15,4 +15,5 @@ export const STORAGE_KEYS = {
   onboardingComplete: '8f_onboarding_complete',
   investmentProfile: '8f_investment_profile',
   subscriptionStatus: '8f_subscription_status',
+  deviceId: '8f_device_id',
 } as const;
