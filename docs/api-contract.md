@@ -111,7 +111,158 @@ This fetches `/openapi.json` from the running server and generates `src/app/core
 - User preferences persisted via `@capacitor/preferences` (local key-value storage)
 - Mock subscription "purchase" is client-only (no server validation)
 
-If a future feature needs to sync onboarding data to the server (e.g., investment profile for personalized AI responses), a new endpoint would be added here in a subsequent prep session.
+---
+
+## AI Chat Feature
+
+### POST /api/v1/chat
+
+**Description:** Streams an AI chat response. Client sends full conversation state; server is stateless. Server builds a system prompt based on mode/persona, trims messages to a sliding window (last 10 pairs), injects portfolio context, and proxies to Anthropic Claude API. Response is SSE.
+
+**Request:**
+```json
+{
+  "mode": "onboarding | common | asset",
+  "persona": "beginner | experienced",
+  "messages": [
+    { "role": "user | assistant", "content": "string" }
+  ],
+  "portfolio": {
+    "holdings": [
+      {
+        "ticker": "AAPL",
+        "name": "Apple Inc.",
+        "exchange": "NASDAQ",
+        "quantity": 50,
+        "cost_basis": 175.20,
+        "current_price": 198.45,
+        "value": 9922.50,
+        "daily_change_percent": 2.31
+      }
+    ],
+    "total_value": 47230.00,
+    "daily_change": 312.50,
+    "daily_change_percent": 0.67
+  },
+  "asset": {
+    "ticker": "AAPL",
+    "name": "Apple Inc."
+  }
+}
+```
+
+**`asset` field:** Required when `mode=asset`, ignored otherwise. Tells the AI which holding to focus on.
+
+**Response (200 — SSE stream):**
+
+Does NOT use the standard `ApiResponse[T]` envelope. Returns `text/event-stream`:
+
+```
+event: token
+data: {"content": "Your"}
+
+event: token
+data: {"content": " portfolio"}
+
+event: done
+data: {}
+
+event: error
+data: {"message": "Something went wrong"}
+```
+
+**SSE event types:**
+
+| Event | Data Shape | Description |
+|---|---|---|
+| `token` | `{"content": "string"}` | A streamed text chunk |
+| `done` | `{}` | Stream complete |
+| `error` | `{"message": "string"}` | Error during streaming |
+
+**Onboarding end signal:** When the AI determines the portfolio is ready (onboarding mode, after 3-5 exchanges), the streamed response will contain:
+```
+[PORTFOLIO_READY]
+<portfolio_data>
+{"holdings": [...], "totalValue": 47230, ...}
+</portfolio_data>
+```
+Client parses and strips this from the displayed message, extracts the JSON, and persists via `PortfolioService`.
+
+**Errors (non-streaming):**
+- 422 `VALIDATION_ERROR`: Invalid request body (bad mode, missing fields)
+- 500 `AI_SERVICE_ERROR`: Anthropic API failure (key missing, rate limit, etc.)
+
+**Server behavior:**
+1. Validate request with Pydantic
+2. Build system prompt: base personality (persona) + mode instructions + portfolio data + asset focus (if asset mode)
+3. Trim `messages` to last 20 (10 pairs) — sliding window
+4. Call `anthropic.messages.stream()` with system prompt + trimmed messages
+5. Yield SSE events as tokens arrive
+6. On completion, yield `done` event
+7. On error, yield `error` event and close stream
+
+**Configuration:**
+- Model: `claude-sonnet-4-20250514`
+- Max tokens: 1024
+- Temperature: 0.7
+- API key: `ANTHROPIC_API_KEY` env var
+
+---
+
+### GET /api/v1/portfolio
+
+**Description:** Returns the mock portfolio data. Used by dashboard and asset detail screens. In MVP, this returns hardcoded mock data that matches the Figma design values.
+
+**Response (200):**
+```json
+{
+  "data": {
+    "holdings": [
+      {
+        "ticker": "AAPL",
+        "name": "Apple Inc.",
+        "exchange": "NASDAQ",
+        "quantity": 50,
+        "cost_basis": 175.20,
+        "current_price": 198.45,
+        "value": 9922.50,
+        "daily_change_percent": 1.24
+      }
+    ],
+    "total_value": 47230.00,
+    "daily_change": 312.50,
+    "daily_change_percent": 0.67
+  },
+  "meta": { "timestamp": "2026-03-29T10:00:00Z" }
+}
+```
+
+**Errors:**
+- None expected (mock data always available)
+
+---
+
+### GET /api/v1/portfolio/{ticker}/metrics
+
+**Description:** Returns mock market metrics for a specific asset. Used on asset detail screen.
+
+**Response (200):**
+```json
+{
+  "data": {
+    "ticker": "AAPL",
+    "pe_ratio": 32.1,
+    "market_cap": "$3.04T",
+    "day_range_low": 195.20,
+    "day_range_high": 199.10,
+    "volume": "45.2M"
+  },
+  "meta": { "timestamp": "2026-03-29T10:00:00Z" }
+}
+```
+
+**Errors:**
+- 404 `ASSET_NOT_FOUND`: Ticker not in mock data
 
 ---
 

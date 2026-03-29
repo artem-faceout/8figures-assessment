@@ -90,4 +90,101 @@ Wraps all successful responses (see `skills/api-contract-patterns.md`):
 
 ---
 
+## Portfolio Models
+
+### Holding
+
+**Description:** A single investment position in the user's portfolio. Created during onboarding chat, served by portfolio endpoint, displayed on dashboard and asset detail.
+
+| Field | Type | Required | Validation | Description |
+|---|---|---|---|---|
+| ticker | string | yes | 1–10 chars, uppercase | Asset ticker symbol (e.g., "AAPL") |
+| name | string | yes | non-empty | Full asset name (e.g., "Apple Inc.") |
+| exchange | string | yes | non-empty | Exchange name (e.g., "NASDAQ") |
+| quantity | number | yes | > 0 | Number of shares/units held |
+| cost_basis | number | yes | >= 0 | Average cost per share |
+| current_price | number | yes | >= 0 | Current market price per share |
+| value | number | yes | >= 0 | Total position value (quantity × current_price) |
+| daily_change_percent | number | yes | — | Daily price change as percentage |
+
+**Derived fields (client-side):**
+- `gain_loss = value - (quantity × cost_basis)`
+- `gain_loss_percent = gain_loss / (quantity × cost_basis) × 100`
+
+### Portfolio
+
+**Description:** Complete portfolio state. Persisted to localStorage after onboarding, served by portfolio endpoint.
+
+| Field | Type | Required | Validation | Description |
+|---|---|---|---|---|
+| holdings | Holding[] | yes | non-empty | List of investment positions |
+| total_value | number | yes | >= 0 | Sum of all holding values |
+| daily_change | number | yes | — | Total dollar change today |
+| daily_change_percent | number | yes | — | Total percentage change today |
+
+### AssetMetrics
+
+**Description:** Market metrics for a single asset. Mock data, not user-provided. Used on asset detail screen.
+
+| Field | Type | Required | Validation | Description |
+|---|---|---|---|---|
+| ticker | string | yes | matches a Holding ticker | Asset identifier |
+| pe_ratio | number | no | — | Price-to-earnings ratio |
+| market_cap | string | yes | non-empty | Human-readable market cap (e.g., "$3.04T") |
+| day_range_low | number | yes | >= 0 | Day's lowest price |
+| day_range_high | number | yes | >= day_range_low | Day's highest price |
+| volume | string | yes | non-empty | Human-readable volume (e.g., "45.2M") |
+
+---
+
+## Chat Models
+
+### ChatMessage
+
+**Description:** A single message in a chat conversation. Used in API request body.
+
+| Field | Type | Required | Validation | Description |
+|---|---|---|---|---|
+| role | string | yes | `"user"` \| `"assistant"` | Message sender |
+| content | string | yes | non-empty | Message text content |
+
+### ChatRequest
+
+**Description:** Request body for the chat endpoint. Client sends full state; server is stateless.
+
+| Field | Type | Required | Validation | Description |
+|---|---|---|---|---|
+| mode | string | yes | `"onboarding"` \| `"common"` \| `"asset"` | Chat mode |
+| persona | string | yes | `"beginner"` \| `"experienced"` | User's investment profile |
+| messages | ChatMessage[] | yes | 0–100 items | Conversation history |
+| portfolio | Portfolio | yes | — | Current portfolio state |
+| asset | AssetContext \| null | no | required if mode=asset | Focused asset |
+
+### AssetContext
+
+**Description:** Identifies which asset the chat should focus on in asset mode.
+
+| Field | Type | Required | Validation | Description |
+|---|---|---|---|---|
+| ticker | string | yes | non-empty | Asset ticker symbol |
+| name | string | yes | non-empty | Asset full name |
+
+### ChatConfig (Client-Only)
+
+**Description:** Configuration passed to ChatPage component. Not sent to server — used to configure the chat UI and build request params. Defined in `core/models/chat.model.ts`.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| mode | `'onboarding'` \| `'common'` \| `'asset'` | yes | Chat mode |
+| persona | `'beginner'` \| `'experienced'` | yes | User persona |
+| asset | `{ ticker: string; name: string }` \| undefined | no | Asset context for asset mode |
+
+### StorageKeys (additions)
+
+| Key | Value Type | Description |
+|---|---|---|
+| `8f_portfolio` | JSON string | Serialized Portfolio object |
+
+---
+
 *This file is updated by the prep session before client/server sessions begin.*

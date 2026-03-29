@@ -4,6 +4,58 @@
  */
 
 export interface paths {
+    "/api/v1/portfolio": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Portfolio Endpoint */
+        get: operations["get_portfolio_endpoint_api_v1_portfolio_get"];
+        put?: never;
+        /** Save Portfolio Endpoint */
+        post: operations["save_portfolio_endpoint_api_v1_portfolio_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/portfolio/{ticker}/metrics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Asset Metrics */
+        get: operations["get_asset_metrics_api_v1_portfolio__ticker__metrics_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/chat": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Chat */
+        post: operations["chat_api_v1_chat_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/health": {
         parameters: {
             query?: never;
@@ -24,7 +76,190 @@ export interface paths {
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: never;
+    schemas: {
+        /** ApiResponse[AssetMetrics] */
+        ApiResponse_AssetMetrics_: {
+            data: components["schemas"]["AssetMetrics"];
+            meta?: components["schemas"]["Meta"];
+        };
+        /** AssetContext */
+        AssetContext: {
+            /**
+             * Ticker
+             * @description Asset ticker symbol
+             */
+            ticker: string;
+            /**
+             * Name
+             * @description Asset full name
+             */
+            name: string;
+        };
+        /** AssetMetrics */
+        AssetMetrics: {
+            /**
+             * Ticker
+             * @description Asset identifier
+             */
+            ticker: string;
+            /**
+             * Pe Ratio
+             * @description Price-to-earnings ratio
+             */
+            pe_ratio?: number | null;
+            /**
+             * Market Cap
+             * @description Human-readable market cap
+             */
+            market_cap: string;
+            /**
+             * Day Range Low
+             * @description Day's lowest price
+             */
+            day_range_low: number;
+            /**
+             * Day Range High
+             * @description Day's highest price
+             */
+            day_range_high: number;
+            /**
+             * Volume
+             * @description Human-readable trading volume
+             */
+            volume: string;
+        };
+        /** ChatMessage */
+        ChatMessage: {
+            /**
+             * Role
+             * @description Message sender
+             * @enum {string}
+             */
+            role: "user" | "assistant";
+            /**
+             * Content
+             * @description Message text content
+             */
+            content: string;
+        };
+        /** ChatRequest */
+        ChatRequest: {
+            /**
+             * Mode
+             * @description Chat mode
+             * @enum {string}
+             */
+            mode: "onboarding" | "common" | "asset";
+            /**
+             * Persona
+             * @description User's investment profile
+             * @enum {string}
+             */
+            persona: "beginner" | "experienced";
+            /**
+             * Messages
+             * @description Conversation history
+             */
+            messages: components["schemas"]["ChatMessage"][];
+            /** @description Current portfolio state */
+            portfolio: components["schemas"]["Portfolio"];
+            /** @description Focused asset (required for asset mode) */
+            asset?: components["schemas"]["AssetContext"] | null;
+        };
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
+        /** Holding */
+        Holding: {
+            /**
+             * Ticker
+             * @description Asset ticker symbol
+             */
+            ticker: string;
+            /**
+             * Name
+             * @description Full asset name
+             */
+            name: string;
+            /**
+             * Exchange
+             * @description Exchange name
+             */
+            exchange: string;
+            /**
+             * Quantity
+             * @description Number of shares/units held
+             */
+            quantity: number;
+            /**
+             * Cost Basis
+             * @description Average cost per share
+             */
+            cost_basis: number;
+            /**
+             * Current Price
+             * @description Current market price per share
+             */
+            current_price: number;
+            /**
+             * Value
+             * @description Total position value
+             */
+            value: number;
+            /**
+             * Daily Change Percent
+             * @description Daily price change as percentage
+             */
+            daily_change_percent: number;
+        };
+        /** Meta */
+        Meta: {
+            /**
+             * Timestamp
+             * Format: date-time
+             * @description Response timestamp in UTC
+             */
+            timestamp?: string;
+        };
+        /** Portfolio */
+        Portfolio: {
+            /**
+             * Holdings
+             * @description List of investment positions
+             */
+            holdings: components["schemas"]["Holding"][];
+            /**
+             * Total Value
+             * @description Sum of all holding values
+             */
+            total_value: number;
+            /**
+             * Daily Change
+             * @description Total dollar change today
+             */
+            daily_change: number;
+            /**
+             * Daily Change Percent
+             * @description Total percentage change today
+             */
+            daily_change_percent: number;
+        };
+        /** ValidationError */
+        ValidationError: {
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, never>;
+        };
+    };
     responses: never;
     parameters: never;
     requestBodies: never;
@@ -33,6 +268,138 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    get_portfolio_endpoint_api_v1_portfolio_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-device-id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    save_portfolio_endpoint_api_v1_portfolio_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-device-id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Portfolio"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_asset_metrics_api_v1_portfolio__ticker__metrics_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                ticker: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_AssetMetrics_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    chat_api_v1_chat_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-device-id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChatRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     health_check_api_v1_health_get: {
         parameters: {
             query?: never;
