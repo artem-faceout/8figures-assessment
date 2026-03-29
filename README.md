@@ -73,7 +73,6 @@ See [docs/architecture.md](docs/architecture.md) for architecture decisions and 
 
 See [CLAUDE.md](CLAUDE.md) for the root project config.
 See [.claude/](.claude/) for skills, commands, and workflow automation.
-See [docs/tasks.md](docs/tasks.md) for the task breakdown.
 
 ## Deliverables
 
