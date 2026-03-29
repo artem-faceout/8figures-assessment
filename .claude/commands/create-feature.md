@@ -40,6 +40,7 @@ Build using TDD cycles per `skills/tdd-workflow.md`. For each slice:
 - Smart/dumb component separation
 - Ionic components for all UI (per `skills/figma-to-ionic.md`)
 - Design tokens from `skills/design-system.md`
+- Fixed header/footer layout for full-screen views (per `skills/layout-patterns.md`)
 
 **Server senior patterns (per `skills/fastapi-senior-review.md`):**
 - `Depends()` for dependency injection

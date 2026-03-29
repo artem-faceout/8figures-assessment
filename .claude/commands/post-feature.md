@@ -78,7 +78,8 @@ Run `commands/design-review.md`:
 - Design system tokens used (not hardcoded values)
 - Financial formatting correct
 - Loading/empty/error states present
-- Mobile viewport tested (375px)
+- Layout follows `skills/layout-patterns.md` (fixed header/footer, scrollable content)
+- Tested on both viewports: iPhone 13 Mini (375×812) AND iPhone SE (320×568)
 
 ### Phase 6: Visual Snapshots (always run)
 
@@ -90,16 +91,18 @@ Tests compare against saved baselines. If they fail, either fix the regression o
 
 **For new screens** (no baseline yet):
 1. Get the Figma screenshot: call `get_design_context` for the screen's node ID
-2. Open the running app at the route (375px viewport)
+2. Open the running app at the route
 3. Compare visually against the Figma screenshot — verify: layout, colors, typography, spacing, content hierarchy
-4. If it doesn't match Figma → fix implementation first, do NOT create a baseline from a broken screen
-5. Once it matches Figma → create the baseline:
+4. Check on **both viewports** (iPhone 13 Mini AND iPhone SE) — ensure CTA is visible, content scrolls, nothing overflows
+5. If it doesn't match Figma → fix implementation first, do NOT create a baseline from a broken screen
+6. Once it matches Figma → create the baseline:
 ```bash
 cd client && npx playwright test --grep @visual --update-snapshots
 ```
-6. Commit the baseline screenshot to git
+7. Verify snapshots for both viewports were generated (check `-iPhone-13-Mini-` and `-iPhone-SE-` suffixed files)
+8. Commit the baseline screenshots to git
 
-**The Figma screenshot is the source of truth for new screens. Playwright baselines capture the approved implementation for regression detection going forward.**
+**The Figma screenshot is the source of truth for new screens. Playwright baselines capture the approved implementation for regression detection going forward. Both viewport baselines are required.**
 
 ### Phase 7: Contract Drift Check (blocking)
 Verify implementation matches the shared contracts:
