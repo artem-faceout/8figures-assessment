@@ -44,6 +44,8 @@ ng build && npx cap sync && npx cap open ios   # iOS simulator
 |Visual testing    |Playwright                               |Screenshot snapshots at mobile viewport, catches UI regressions|
 |Unit testing (FE) |Jest + Testing Library                   |Behavior-focused component tests, TDD workflow                 |
 |Unit testing (BE) |pytest + httpx                           |Async tests, 80% coverage threshold                           |
+|API contract      |Response envelope + typed SSE events     |`skills/api-contract-patterns.md`, Pydantic source of truth            |
+|Type generation   |openapi-typescript                       |Server OpenAPI → client TS types, zero manual sync                    |
 |Design system     |Ionic CSS variables + custom tokens      |Defined in `.claude/skills/design-system.md` and `theme/variables.scss`|
 
 ## Coding Conventions
@@ -117,6 +119,8 @@ client/src/app/
 - DO NOT update signals per-chunk during streaming — batch via requestAnimationFrame
 - DO NOT use sync I/O in async FastAPI handlers — use aiofiles or asyncio.to_thread
 - DO NOT fix a pattern bug without updating the skill that should have prevented it — see `commands/fix-bug.md`
+- DO NOT return raw data from endpoints — always wrap in `ApiResponse[T]` envelope per `skills/api-contract-patterns.md`
+- DO NOT hand-write TypeScript interfaces for API types — regenerate from OpenAPI: `cd client && npm run generate:types`
 
 ## AI Agent Workflow
 

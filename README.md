@@ -46,6 +46,9 @@ npx cap open ios
 
 ### Testing
 ```bash
+# Generate API types (requires server running)
+cd client && npm run generate:types
+
 # Client unit tests (Jest + Testing Library)
 cd client
 npx jest                             # Run all tests

@@ -9,7 +9,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "generate:types": "npx openapi-typescript http://localhost:8000/openapi.json -o src/app/core/models/api.generated.ts"
   },
   "private": true,
   "packageManager": "npm@10.9.4",
@@ -42,6 +43,7 @@
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.3.0",
     "jest-preset-angular": "^16.1.1",
+    "openapi-typescript": "^7.13.0",
     "prettier": "^3.8.1",
     "ts-node": "^10.9.2",
     "typescript": "~5.9.2",

@@ -41,6 +41,14 @@ server/
 - Never commit `.env` — it's in `.gitignore`
 - Streaming responses use `StreamingResponse` with `text/event-stream`
 
+## API Contract
+
+- **Every response** wrapped in `ApiResponse[T]` envelope — see `skills/api-contract-patterns.md`
+- **Every error** uses `ApiErrorResponse` with machine-readable code
+- **Streaming** uses typed SSE events: `chunk`, `done`, `error`
+- **Pydantic models are the source of truth** — client TypeScript types auto-generated from OpenAPI spec
+- After adding/changing models: client runs `npm run generate:types` to regenerate
+
 ## Testing (pytest)
 
 - Config: `pyproject.toml` (asyncio_mode = auto)

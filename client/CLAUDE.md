@@ -66,6 +66,15 @@ npx cap open ios            # Open in Xcode
 - TDD workflow: RED (failing test) → GREEN (make it pass) → REFACTOR
 - Coverage target: >80% on business logic
 
+## API Types (auto-generated)
+
+- Generated file: `src/app/core/models/api.generated.ts`
+- Generate: `npm run generate:types` (requires server running on port 8000)
+- Source: FastAPI OpenAPI spec at `http://localhost:8000/openapi.json`
+- **Never hand-write TypeScript interfaces for API types** — always regenerate
+- Generated file is committed to git so client sessions don't need server running
+- After server adds/changes Pydantic models → regenerate and commit
+
 ## Environment Files
 
 - `src/environments/environment.ts` — dev (localhost:8000)
