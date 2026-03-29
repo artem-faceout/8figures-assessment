@@ -99,23 +99,35 @@ Recommend to user:
 5. Run full test suite on main after all merges
 6. Delete worktrees: `git worktree remove ../feature-a`
 
-### 5. Review & Confirm
+### 5. Update PRD with Implementation Manifest
+After the prep work is done, append the following to the feature's PRD (`docs/prd-<feature>.md`):
+
+#### Implementation Manifest section
+- **Files to Create:** Full tree of every file the feature session will create, with one-line descriptions of each file's purpose
+- **Files to Modify:** Table of existing files that will be changed, with a description of the change. Mark prerequisites already completed with ✅
+- **Prerequisites Status:** Checklist of all setup work (dependency installs, config changes, token syncs, etc.) with completion status
+
+**Why this matters:** The feature session should EXECUTE, not re-derive architecture. The prep session makes structural decisions; the PRD persists them so any session (or parallel agent) can read the manifest and know exactly what to build without ambiguity. Without the manifest, different sessions may make different structural choices, causing merge conflicts or inconsistent architecture.
+
+### 6. Review & Confirm
 Present to the user:
 - Data models (fields and types)
 - API endpoints (paths and shapes)
+- Implementation manifest (files to create/modify)
 - Execution strategy: parallel (with overlap matrix) or sequential (with reasoning)
 - If parallel: merge order recommendation
 
 Wait for user approval before they launch feature sessions.
 
 ## Output
+- `docs/prd-<feature>.md` — PRD with implementation manifest, prerequisites status
 - `docs/data-models.md` — updated with feature models
 - `docs/api-contract.md` — updated with feature endpoints
 - Execution strategy with file overlap analysis
 - User has reviewed and approved
 
 ## How Feature Sessions Use This
-Each session reads `docs/api-contract.md` and `docs/data-models.md` as shared contracts. The user provides the feature spec directly in chat — no task files needed. Each session follows `commands/create-feature.md`.
+Each session reads the feature PRD (`docs/prd-<feature>.md`) for the implementation manifest, `docs/api-contract.md` and `docs/data-models.md` for shared contracts. The PRD tells the session exactly which files to create and modify — the session builds to that spec. Each session follows `commands/create-feature.md`.
 
 ## Critical Rules
 - Feature sessions must NOT modify `docs/api-contract.md` or `docs/data-models.md`. If they discover something is wrong or incomplete, they stop and flag it. Only the prep session changes these files.
