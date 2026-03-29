@@ -41,6 +41,6 @@ export class OnboardingPage {
   }
 
   async onComplete(): Promise<void> {
-    await this.router.navigate(['/']);
+    await this.router.navigate(['/home']);
   }
 }

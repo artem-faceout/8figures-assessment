@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { onboardingGuard } from '@app/core/guards/onboarding.guard';
 import { onboardingRedirectGuard } from '@app/core/guards/onboarding.guard';
 
 export const routes: Routes = [
@@ -7,6 +8,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/onboarding/onboarding.page').then(m => m.OnboardingPage),
     canActivate: [onboardingRedirectGuard],
+  },
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('./features/onboarding/components/home-placeholder.component').then(m => m.HomePlaceholderComponent),
+    canActivate: [onboardingGuard],
   },
   {
     path: '',

@@ -69,7 +69,7 @@ describe('onboardingRedirectGuard', () => {
     const result = await TestBed.runInInjectionContext(() => onboardingRedirectGuard({} as never, {} as never));
 
     expect(result).toBe(mockUrlTree);
-    expect(mockRouter.createUrlTree).toHaveBeenCalledWith(['/']);
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith(['/home']);
   });
 
   it('should return true when onboarding is not complete', async () => {
