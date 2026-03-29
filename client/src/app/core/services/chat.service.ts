@@ -42,6 +42,7 @@ export class ChatService {
   private readonly _thinkingPhrase = signal('');
   private config: ChatConfig | null = null;
   private abortController: AbortController | null = null;
+  private fullStreamContent = '';
 
   readonly messages = this._messages.asReadonly();
   readonly isStreaming = this._isStreaming.asReadonly();
@@ -97,6 +98,8 @@ export class ChatService {
     this._thinkingPhrase.set(
       getRandomThinkingPhrase(this.config.mode, this.config.asset?.ticker)
     );
+
+    this.fullStreamContent = '';
 
     // Add placeholder assistant message
     this._messages.update(msgs => [
@@ -274,11 +277,19 @@ export class ChatService {
   }
 
   private appendToLastAssistantMessage(text: string): void {
+    this.fullStreamContent += text;
+
+    // Only show content before [PORTFOLIO_READY] marker
+    const markerIndex = this.fullStreamContent.indexOf('[PORTFOLIO_READY]');
+    const displayContent = markerIndex !== -1
+      ? this.fullStreamContent.substring(0, markerIndex).trim()
+      : this.fullStreamContent;
+
     this._messages.update(msgs => {
       const updated = [...msgs];
       const last = updated[updated.length - 1];
       if (last?.role === 'assistant') {
-        updated[updated.length - 1] = { ...last, content: last.content + text };
+        updated[updated.length - 1] = { ...last, content: displayContent };
       }
       return updated;
     });
@@ -300,7 +311,8 @@ export class ChatService {
     const last = msgs[msgs.length - 1];
     if (!last || last.role !== 'assistant') return;
 
-    const parseResult = this.parsePortfolioReady(last.content);
+    // Parse from full accumulated content (includes marker + JSON that was hidden from display)
+    const parseResult = this.parsePortfolioReady(this.fullStreamContent || last.content);
 
     if (parseResult.hasPortfolio && parseResult.portfolio) {
       this.portfolioService.setPortfolio(parseResult.portfolio);
