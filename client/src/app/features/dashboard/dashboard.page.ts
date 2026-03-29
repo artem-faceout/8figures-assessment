@@ -49,10 +49,10 @@ export class DashboardPage implements OnInit {
   }
 
   onHoldingTap(ticker: string): void {
-    this.router.navigate(['/tabs/dashboard/asset', ticker]);
+    this.router.navigate(['/dashboard/asset', ticker]);
   }
 
   onFabTap(): void {
-    this.router.navigate(['/tabs/chat']);
+    this.router.navigate(['/chat']);
   }
 }

@@ -23,7 +23,7 @@ export const onboardingRedirectGuard: CanActivateFn = async () => {
   const complete = await service.checkOnboardingStatus();
 
   if (complete) {
-    return router.createUrlTree(['/tabs/dashboard']);
+    return router.createUrlTree(['/dashboard']);
   }
 
   return true;

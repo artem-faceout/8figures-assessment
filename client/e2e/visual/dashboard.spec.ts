@@ -92,7 +92,7 @@ test.describe('Dashboard @visual', () => {
   });
 
   test('Dashboard screen', async ({ page }) => {
-    await page.goto('/tabs/dashboard');
+    await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
     await expect(page.getByText('HOLDINGS')).toBeVisible();
     // Wait for insight card to load
@@ -161,7 +161,7 @@ test.describe('Asset Detail @visual', () => {
   });
 
   test('Asset detail screen', async ({ page }) => {
-    await page.goto('/tabs/dashboard/asset/AAPL');
+    await page.goto('/dashboard/asset/AAPL');
     await page.waitForLoadState('networkidle');
     await expect(page.getByText('Apple Inc.')).toBeVisible();
     // Wait for metrics to load

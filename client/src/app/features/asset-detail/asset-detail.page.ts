@@ -109,13 +109,13 @@ export class AssetDetailPage implements OnInit {
   ngOnInit(): void {
     const ticker = this.route.snapshot.paramMap.get('ticker');
     if (!ticker) {
-      this.router.navigate(['/tabs/dashboard']);
+      this.router.navigate(['/dashboard']);
       return;
     }
 
     const holdingData = this.portfolioService.getHoldingByTicker(ticker);
     if (!holdingData) {
-      this.router.navigate(['/tabs/dashboard']);
+      this.router.navigate(['/dashboard']);
       return;
     }
 
@@ -169,7 +169,7 @@ export class AssetDetailPage implements OnInit {
   onAskAi(): void {
     const h = this.holding();
     if (!h) return;
-    this.router.navigate(['/tabs/chat'], {
+    this.router.navigate(['/chat'], {
       state: {
         chatConfig: {
           mode: 'asset',

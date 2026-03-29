@@ -35,8 +35,8 @@ describe('DashboardPage', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         provideRouter([
-          { path: 'tabs/dashboard/asset/:ticker', component: DashboardPage },
-          { path: 'tabs/chat', component: DashboardPage },
+          { path: 'dashboard/asset/:ticker', component: DashboardPage },
+          { path: 'chat', component: DashboardPage },
         ]),
       ],
     });

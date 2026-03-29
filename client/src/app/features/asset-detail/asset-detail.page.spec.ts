@@ -48,8 +48,8 @@ describe('AssetDetailPage', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         provideRouter([
-          { path: 'tabs/dashboard', component: AssetDetailPage },
-          { path: 'tabs/chat', component: AssetDetailPage },
+          { path: 'dashboard', component: AssetDetailPage },
+          { path: 'chat', component: AssetDetailPage },
         ]),
         { provide: ActivatedRoute, useValue: mockRoute },
       ],
