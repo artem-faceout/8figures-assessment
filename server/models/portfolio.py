@@ -13,7 +13,7 @@ class Holding(BaseModel):
 
 
 class Portfolio(BaseModel):
-    holdings: list[Holding] = Field(min_length=1, description="List of investment positions")
+    holdings: list[Holding] = Field(default_factory=list, description="List of investment positions")
     total_value: float = Field(ge=0, description="Sum of all holding values")
     daily_change: float = Field(description="Total dollar change today")
     daily_change_percent: float = Field(description="Total percentage change today")

@@ -79,6 +79,16 @@ def override_ai_service():
 
 # ── Validation tests ────────────────────────────────────────────────────────
 
+async def test_chat_accepts_empty_portfolio_for_onboarding(client: AsyncClient) -> None:
+    body = _valid_chat_body(mode="onboarding")
+    body["portfolio"]["holdings"] = []
+    body["portfolio"]["total_value"] = 0
+    body["portfolio"]["daily_change"] = 0
+    body["portfolio"]["daily_change_percent"] = 0
+    response = await client.post("/api/v1/chat", json=body, headers=DEVICE_HEADERS)
+    assert response.status_code == 200
+
+
 async def test_chat_rejects_invalid_mode(client: AsyncClient) -> None:
     body = _valid_chat_body()
     body["mode"] = "invalid"
