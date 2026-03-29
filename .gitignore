@@ -20,6 +20,9 @@ client/android/
 *.swp
 *.swo
 
+# Claude Code memory (per-user, not project-level)
+.claude/projects/
+
 # OS
 .DS_Store
 Thumbs.db
