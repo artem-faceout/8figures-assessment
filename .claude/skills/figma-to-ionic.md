@@ -1,5 +1,7 @@
 # Skill: Figma to Ionic/Angular Translation
 
+> **Reusability note:** The 7-step workflow below (Figma MCP → extract patterns → map to Ionic + custom SCSS → apply design tokens → verify) is reusable across any Ionic/Angular project with Figma designs. The component mapping table in Step 3 is project-specific, built by extracting patterns from this project's Figma screens.
+
 ## When to use
 When implementing a screen or component from a Figma design using the Figma MCP.
 

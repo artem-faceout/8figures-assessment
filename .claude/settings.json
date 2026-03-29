@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)",
+      "Bash(git rebase:*)",
+      "Bash(git worktree:*)",
+      "Bash(git config:*)",
+      "Bash(cd client && npx jest:*)",
+      "Bash(cd client && npx ng lint:*)",
+      "Bash(cd client && npx tsc --noEmit:*)",
+      "Bash(cd client && npx ng build:*)",
+      "Bash(cd client && npx cap sync:*)",
+      "Bash(cd client && npx playwright test:*)",
+      "Bash(cd server && source .venv/bin/activate && pytest:*)",
+      "Bash(python -m py_compile:*)",
+      "Bash(pip install:*)",
+      "Bash(npm install:*)",
+      "Bash(ls:*)",
+      "WebSearch"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(git push --force:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean -f:*)"
+    ]
+  }
+}

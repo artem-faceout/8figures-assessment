@@ -1,7 +1,9 @@
 # Command: Build & Verify
 
+> **Scope:** Quick sanity check during development. For the full quality gate before committing (tests, senior review, architecture, design, visual snapshots, contract drift), use `commands/post-feature.md` instead.
+
 ## Workflow
-Full build verification before marking a feature complete.
+Fast build verification to catch compile/lint/build errors mid-development.
 
 ### Steps
 

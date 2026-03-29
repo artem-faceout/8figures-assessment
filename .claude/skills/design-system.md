@@ -1,5 +1,7 @@
 # Skill: Design System
 
+> **Reusability note:** The structure of this skill — extracting color tokens, typography scale, spacing, radius, and component patterns from Figma into a single source of truth — is reusable across any project. The specific tokens and values below are project-specific, extracted from the 8FIGURES Figma designs.
+
 ## When to use
 When building any UI component. This is the single source of truth for visual decisions. Extracted from Figma designs.
 

@@ -1,5 +1,7 @@
 # Command: Review and Fix
 
+> **Scope:** Standalone code review — use anytime to audit existing code quality. For the full pre-commit quality gate during feature development (which adds tests, contract drift check, visual snapshots, and commit), use `commands/post-feature.md` instead.
+
 ## Workflow
 Full code review at senior/principal engineer level. Checks surface issues, stack-specific patterns, and architecture.
 
