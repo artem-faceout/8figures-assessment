@@ -122,12 +122,12 @@ client/src/app/
 
 Every feature goes through this pipeline:
 
-### Three-session model
-1. **Prep session** (`commands/prepare-feature.md`) — takes feature description, produces API contract (`docs/api-contract.md`), data models (`docs/data-models.md`), and task specs for client and server sessions
-2. **Client session** — user provides spec in chat, agent reads `docs/api-contract.md` + `docs/data-models.md`, builds frontend
-3. **Server session** — user provides spec in chat, agent reads `docs/api-contract.md` + `docs/data-models.md`, builds backend
+### Multi-session model
+1. **Prep session** (`commands/prepare-feature.md`) — takes feature descriptions, produces API contract (`docs/api-contract.md`), data models (`docs/data-models.md`), and execution strategy (parallel vs sequential based on file overlap analysis)
+2. **Feature sessions** — one per feature, full vertical slice (server + client). User provides spec in chat, agent reads shared contracts. Each follows `commands/create-feature.md`
+3. **Parallel execution** — when prep session confirms safe via overlap matrix, features run in separate git worktrees. Merge order by dependency (least-dependent first)
 
-Client and server sessions run in parallel. Both build against the shared contract. Neither modifies the contract — if something is wrong, stop and flag it.
+Feature sessions must NOT modify contracts or touch files outside their assigned scope — if something is wrong, stop and flag it.
 
 ### Within each session
 1. **Plan** — Read task spec + contract, confirm slices, identify edge cases
