@@ -47,21 +47,25 @@ export class OnboardingService {
   }
 
   async checkOnboardingStatus(): Promise<boolean> {
-    const { value: complete } = await Preferences.get({
-      key: STORAGE_KEYS.onboardingComplete,
-    });
-
-    if (complete === 'true') {
-      this.isComplete.set(true);
-
-      const { value: profile } = await Preferences.get({
-        key: STORAGE_KEYS.investmentProfile,
+    try {
+      const { value: complete } = await Preferences.get({
+        key: STORAGE_KEYS.onboardingComplete,
       });
-      if (profile === 'experienced' || profile === 'beginner') {
-        this.investmentProfile.set(profile);
-      }
 
-      return true;
+      if (complete === 'true') {
+        this.isComplete.set(true);
+
+        const { value: profile } = await Preferences.get({
+          key: STORAGE_KEYS.investmentProfile,
+        });
+        if (profile === 'experienced' || profile === 'beginner') {
+          this.investmentProfile.set(profile);
+        }
+
+        return true;
+      }
+    } catch {
+      // Preferences may fail in browser without Capacitor runtime — treat as incomplete
     }
 
     return false;
