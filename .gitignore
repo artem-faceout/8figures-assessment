@@ -5,6 +5,7 @@ __pycache__/
 
 # Build
 client/dist/
+client/test-results/
 client/www/
 client/ios/
 client/android/
