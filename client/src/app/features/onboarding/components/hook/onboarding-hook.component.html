@@ -1,0 +1,32 @@
+<div class="hook-screen">
+  <app-ambient-glow
+    [size]="384" [opacity]="0.2" [blur]="60"
+    top="221px" left="-80px" />
+  <app-ambient-glow
+    [size]="500" [opacity]="0.3" [blur]="75"
+    color="#333" bottom="-128px" right="-128px" />
+  <app-ambient-glow
+    [size]="320" [opacity]="0.1" [blur]="50"
+    bottom="-128px" left="97.5px" />
+
+  <div class="content">
+    <div class="headline-section">
+      <h1 class="headline">
+        Your <span class="gradient-text">money</span> is
+        working. But is it
+        working for <span class="gradient-text">you</span>?
+      </h1>
+
+      <p class="subtitle">
+        8Figures uses autonomous intelligence to audit your portfolio in
+        real-time. Experience crystalline financial clarity.
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <button class="cta-button" (click)="onContinue()">
+      Continue
+    </button>
+  </div>
+</div>

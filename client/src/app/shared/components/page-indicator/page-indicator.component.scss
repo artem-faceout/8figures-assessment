@@ -1,0 +1,21 @@
+.dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--color-surface-overlay-10);
+  transition: width 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+
+  &.active {
+    width: 32px;
+    height: 6px;
+    background: var(--color-accent);
+    box-shadow: 0 0 20px rgba(247, 147, 26, 0.3);
+  }
+}

@@ -1,0 +1,213 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.paywall-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  background: var(--color-background);
+  padding: 0 1.5rem;
+}
+
+.back-button-area {
+  padding: 1rem 0;
+  z-index: 1;
+}
+
+.back-button {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--color-border-alt);
+  border-radius: 9999px;
+  color: var(--color-text-white);
+  cursor: pointer;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  z-index: 1;
+}
+
+.hero {
+  text-align: center;
+  padding: 0 0.5rem;
+}
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 3rem;
+  line-height: 1.1;
+  letter-spacing: -1.2px;
+  margin: 0 0 1.375rem;
+  background: var(--gradient-hero-text);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.hero-subtitle {
+  font-family: var(--ion-font-family);
+  font-weight: 300;
+  font-size: 1.125rem;
+  line-height: 1.625;
+  color: var(--color-text-warm);
+  margin: 0;
+}
+
+// Pricing card
+.pricing-card {
+  width: 100%;
+  padding: 2.0625rem;
+  background: var(--color-surface-frosted);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border-accent-strong);
+  border-top-width: 2px;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.plan-label {
+  font-family: var(--ion-font-family);
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--color-text-accent-highlight);
+}
+
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.price {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 3rem;
+  color: var(--color-text-chat-body);
+}
+
+.price-suffix {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--color-text-warm);
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-top: 1.5rem;
+}
+
+.feature-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+
+  img {
+    flex-shrink: 0;
+    display: block;
+  }
+
+  span {
+    font-family: var(--ion-font-family);
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-text-feature-list);
+  }
+}
+
+// CTA area
+.cta-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 0 2rem;
+  z-index: 1;
+}
+
+.cta-button {
+  width: 100%;
+  padding: 1.25rem 2rem;
+  border: none;
+  border-radius: 9999px;
+  background: var(--gradient-cta-strong);
+  color: var(--color-text-on-gradient-button);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.125rem;
+  letter-spacing: -0.45px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(247, 147, 26, 0.4);
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:disabled {
+    cursor: wait;
+  }
+}
+
+.spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top-color: var(--color-text-on-gradient-button);
+  border-radius: 9999px;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.restore-link {
+  margin-top: 1rem;
+  background: none;
+  border: none;
+  font-family: var(--ion-font-family);
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--color-text-warm);
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+}
+
+.fine-print {
+  margin-top: 3rem;
+  font-family: var(--ion-font-family);
+  font-weight: 400;
+  font-size: 0.625rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(219, 194, 174, 0.4);
+  text-align: center;
+  line-height: 1.625;
+}

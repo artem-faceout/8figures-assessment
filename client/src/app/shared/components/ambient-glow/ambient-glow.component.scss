@@ -1,0 +1,21 @@
+:host {
+  position: absolute;
+  pointer-events: none;
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: calc(var(--glow-opacity, 0.1) * 0.7);
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: calc(var(--glow-opacity, 0.1) * 1.3);
+    transform: translateY(-10px);
+  }
+}
+
+.glow-animate {
+  animation: glow-pulse 4s ease-in-out infinite;
+}

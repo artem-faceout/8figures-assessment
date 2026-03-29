@@ -1,0 +1,8 @@
+<div class="dots">
+  @for (step of steps(); track step) {
+    <span
+      class="dot"
+      [class.active]="step === currentStep()"
+    ></span>
+  }
+</div>

@@ -1,0 +1,24 @@
+<div class="onboarding-container" [@stepTransition]="currentStep()">
+  @switch (currentStep()) {
+    @case (Step.Hook) {
+      <app-onboarding-hook (continue)="onContinue()" />
+    }
+    @case (Step.Promise) {
+      <app-onboarding-promise (continue)="onContinue()" />
+    }
+    @case (Step.Bridge) {
+      <app-onboarding-bridge (continue)="onContinue()" />
+    }
+    @case (Step.Paywall) {
+      <app-paywall (back)="onBack()" (complete)="onComplete()" />
+    }
+  }
+</div>
+
+@if (currentStep() < Step.Paywall) {
+  <div class="indicator-container">
+    <app-page-indicator
+      [totalSteps]="totalSteps"
+      [currentStep]="currentStep()" />
+  </div>
+}

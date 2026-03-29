@@ -1,0 +1,73 @@
+<div class="paywall-screen">
+  <app-ambient-glow
+    [size]="500" [opacity]="0.1" [blur]="60"
+    top="-10%" left="-18%" />
+  <app-ambient-glow
+    [size]="400" [opacity]="0.05" [blur]="75"
+    bottom="-10%" right="-18%"
+    color="rgba(246, 96, 24, 1)" />
+
+  <div class="back-button-area">
+    <button class="back-button" (click)="onBack()" aria-label="Go back">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="content">
+    <div class="hero">
+      <h1 class="hero-title">Unlock Your Financial Edge</h1>
+      <p class="hero-subtitle">
+        Ascend to the elite tier of asset management. Precision-engineered
+        intelligence for the digital alchemist.
+      </p>
+    </div>
+
+    <div class="pricing-card">
+      <span class="plan-label">PREMIUM YEARLY</span>
+      <div class="price-row">
+        <span class="price">$199.99</span>
+        <span class="price-suffix">/year</span>
+      </div>
+
+      <div class="features">
+        @for (feature of features; track feature.label) {
+          <div class="feature-row">
+            <img [src]="feature.icon" alt="" width="22" height="22" />
+            <span>{{ feature.label }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-area">
+    <button
+      class="cta-button"
+      [disabled]="isPurchasing()"
+      (click)="onStartTrial()">
+      @if (isPurchasing()) {
+        <span class="spinner"></span>
+      } @else {
+        Start 7-Day Free Trial
+      }
+    </button>
+
+    <button class="restore-link" (click)="onRestorePurchase()">
+      RESTORE PURCHASE
+    </button>
+
+    <p class="fine-print">
+      SECURED BY QUANTUM-RESISTANT PROTOCOLS<br />
+      CANCEL ANYTIME DURING TRIAL
+    </p>
+  </div>
+</div>
+
+<ion-toast
+  [isOpen]="showRestoreToast()"
+  message="No previous purchase found"
+  [duration]="2000"
+  position="bottom"
+  (didDismiss)="showRestoreToast.set(false)" />
