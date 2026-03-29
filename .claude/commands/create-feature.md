@@ -4,26 +4,27 @@
 Full feature creation from task description to committed, reviewed code.
 
 ### Input
-- Feature spec provided by the user in chat
+- Feature PRD from prep session (`docs/prd-<feature>.md`) — OR — ad-hoc spec from user in chat
 - Shared contracts: `docs/api-contract.md` and `docs/data-models.md` (populated by prep session)
 
-### Phase 1: Understand
+### Phase 1: Confirm (not re-plan)
+
+**If a PRD exists from prep session (normal path):**
+1. Read the PRD — it contains the implementation manifest (files to create/modify, TDD slice order, edge cases)
+2. Skim the API contract and data models for the endpoints/types this feature touches
+3. Confirm understanding in 2-3 sentences: "Building X, creating files Y, Z. Starting with slice 1."
+4. **DO NOT brainstorm.** The spec is finalized. DO NOT create a new plan document. The PRD IS the plan.
+5. If the contract or models are wrong/incomplete — **stop and flag it**. Don't improvise.
+6. Proceed directly to Phase 2 (Implement).
+
+**If NO PRD exists (ad-hoc feature):**
 1. Read the user's feature spec from chat
-2. Read the API contract — what endpoints you build/consume
-3. Read the data models — what types/interfaces to create
-4. Read related existing code to understand current patterns
+2. Read the API contract and data models
+3. Read related existing code to understand current patterns
+4. Propose TDD slices, identify components/services, note edge cases
+5. Present plan, wait for confirmation before coding
 
-### Phase 2: Plan
-Propose implementation approach:
-- Break into TDD slices
-- Identify components/services to create or reuse
-- Note edge cases, loading/error/empty states
-
-If the API contract or data models are wrong/incomplete — **stop and flag it**. Don't improvise. Only the prep session changes those files.
-
-Present plan, wait for confirmation before coding.
-
-### Phase 3: Implement (TDD)
+### Phase 2: Implement (TDD)
 Build using TDD cycles per `skills/tdd-workflow.md`. For each slice:
 
 1. **RED** — Write a failing test that defines the expected behavior
@@ -54,7 +55,7 @@ Build using TDD cycles per `skills/tdd-workflow.md`. For each slice:
 
 **Visual tests:** When creating a new route/screen, add a Playwright visual test for it in `e2e/visual/screens.spec.ts`. Follow the pattern in `skills/visual-snapshot-testing.md`.
 
-### Phase 4: Quality Gate
+### Phase 3: Quality Gate
 **DO NOT COMMIT until this phase passes.**
 
 Run `commands/post-feature.md` — the full quality gate:
@@ -66,7 +67,7 @@ Run `commands/post-feature.md` — the full quality gate:
 
 Fix all 🔴 and 🟡 findings before proceeding.
 
-### Phase 5: Commit
+### Phase 4: Commit
 - Stage only the files related to this feature
 - Write descriptive commit message with area prefix
 - Pre-commit hook runs automated checks as final safety net

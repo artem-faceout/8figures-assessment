@@ -133,11 +133,25 @@ Every feature goes through this pipeline:
 
 Feature sessions must NOT modify contracts or touch files outside their assigned scope — if something is wrong, stop and flag it.
 
-### Within each session
-1. **Plan** — Read task spec + contract, confirm slices, identify edge cases
+### Within each feature session
+
+Feature sessions receive a finalized PRD from the prep session. The spec is already decided — the feature session's job is to EXECUTE, not re-plan.
+
+1. **Confirm** — Read PRD + contracts, confirm understanding in 2-3 sentences, start immediately. DO NOT brainstorm, DO NOT create a new plan, DO NOT produce new spec documents.
 1. **Implement (TDD)** — RED: write failing test → GREEN: make it pass → REFACTOR: apply senior patterns. Per `skills/tdd-workflow.md`
 1. **Quality Gate** — Run `commands/post-feature.md`: tests, lint, types, build, senior review, architecture review, design review, visual snapshots
 1. **Verify** — All tests pass, build clean, runs in browser, types are strict
+
+### Superpowers skill overrides for feature sessions
+
+When a feature session has a PRD from prep:
+- **brainstorming skill**: SKIP. The prep session already brainstormed. The spec is finalized.
+- **writing-plans skill**: SKIP. The PRD IS the plan. Do not produce another plan document.
+- **TDD skill**: USE. This is the implementation discipline — always follow it.
+- **debugging skill**: USE. If something breaks during implementation, debug properly.
+- **verification skill**: USE. Always verify before claiming done.
+
+If no PRD exists (ad-hoc feature), all skills apply normally.
 
 ## Non-Obvious Context
 

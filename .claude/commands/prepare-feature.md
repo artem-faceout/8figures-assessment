@@ -99,13 +99,49 @@ Recommend to user:
 5. Run full test suite on main after all merges
 6. Delete worktrees: `git worktree remove ../feature-a`
 
-### 5. Update PRD with Implementation Manifest
-After the prep work is done, append the following to the feature's PRD (`docs/prd-<feature>.md`):
+### 5. Write Lean PRD with Implementation Manifest
+Write `docs/prd-<feature>.md`. This is the ONLY document the feature session needs — keep it to ONE page.
 
-#### Implementation Manifest section
-- **Files to Create:** Full tree of every file the feature session will create, with one-line descriptions of each file's purpose
-- **Files to Modify:** Table of existing files that will be changed, with a description of the change. Mark prerequisites already completed with ✅
-- **Prerequisites Status:** Checklist of all setup work (dependency installs, config changes, token syncs, etc.) with completion status
+**Structure:**
+```markdown
+# Feature: <name>
+
+## Scope
+- Endpoints: GET /api/v1/foo, POST /api/v1/bar (details in api-contract.md)
+- Models: Foo, Bar (details in data-models.md)
+- DO NOT copy endpoint/model definitions here — reference the contract docs.
+
+## TDD Slice Order
+1. Model: Foo validation and computed fields
+2. Service: FooService fetches data
+3. Endpoint: GET /api/v1/foo with envelope
+4. Component: FooComponent renders data
+5. UI: styling, formatting, loading/error states
+
+## Files to Create
+- server/models/foo.py — Foo Pydantic model
+- server/routers/foo.py — GET /api/v1/foo endpoint
+- (etc.)
+
+## Files to Modify
+- server/main.py — register foo_router
+- client/src/app/app.routes.ts — add /foo route
+- (etc.)
+
+## Edge Cases
+- Empty portfolio: show empty state
+- (only non-obvious cases)
+
+## Prerequisites
+- [x] API contract defined
+- [x] Data models defined
+- [ ] (any pending setup)
+```
+
+**Rules:**
+- Reference `api-contract.md` and `data-models.md` by name — DO NOT duplicate their content into the PRD
+- The PRD tells the feature session WHAT to build and in WHAT ORDER — the contract docs define the shapes
+- Keep it under ~80 lines. If it's longer, you're duplicating contract content.
 
 **Why this matters:** The feature session should EXECUTE, not re-derive architecture. The prep session makes structural decisions; the PRD persists them so any session (or parallel agent) can read the manifest and know exactly what to build without ambiguity. Without the manifest, different sessions may make different structural choices, causing merge conflicts or inconsistent architecture.
 
