@@ -22,7 +22,7 @@ step "Checking prerequisites"
 # Node.js
 if command -v node &>/dev/null; then
   NODE_VERSION=$(node -v | sed 's/v//' | cut -d. -f1)
-  if [ "$NODE_VERSION" -lt 20 ]; then
+  if [ "$NODE_VERSION" -lt 22 ]; then
     # Try nvm
     if [ -s "$HOME/.nvm/nvm.sh" ]; then
       echo "  Node $NODE_VERSION is too old, switching via nvm..."
@@ -31,7 +31,7 @@ if command -v node &>/dev/null; then
       nvm use 2>/dev/null || nvm install 22
       ok "Node $(node -v) (via nvm)"
     else
-      fail "Node.js 20+ required (found v$NODE_VERSION). Install via nvm or brew install node@22"
+      fail "Node.js 22+ required (found v$NODE_VERSION). Install via nvm or brew install node@22"
     fi
   else
     ok "Node $(node -v)"
@@ -87,7 +87,7 @@ step "Setting up client"
 
 cd client
 
-npm install --silent 2>/dev/null
+npm install --silent
 ok "npm dependencies installed"
 
 npx playwright install chromium 2>/dev/null
@@ -107,13 +107,13 @@ ok "Pre-commit hook enabled (lint, types, build checks run on every commit)"
 step "Verifying builds and tests"
 
 cd client
-npx jest --passWithNoTests 2>/dev/null
+npx jest --passWithNoTests --silent || fail "Client tests failed — run 'cd client && npx jest' to see errors"
 ok "Client tests pass"
 
-npx ng lint 2>/dev/null
+npx ng lint --quiet || fail "ESLint failed — run 'cd client && ng lint' to see errors"
 ok "ESLint passes clean"
 
-npx ng build --configuration=production 2>/dev/null
+npx ng build --configuration=production 2>/dev/null || fail "Build failed — run 'cd client && ng build' to see errors"
 ok "Angular production build successful"
 
 cd ..
@@ -123,7 +123,7 @@ source .venv/bin/activate
 python -m py_compile main.py
 ok "Server compiles without errors"
 
-pytest --tb=short -q 2>/dev/null
+pytest --tb=short -q || fail "Server tests failed — run 'cd server && pytest -v' to see errors"
 ok "Server tests pass"
 
 deactivate

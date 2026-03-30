@@ -26,7 +26,7 @@ The app has three core surfaces:
 - RxJS BehaviorSubjects — works but Signals are the modern Angular direction
 - Signals — lightweight, built-in, sufficient for app with 2-3 screens
 
-**Decision:** Signals. This app has limited state complexity. Signals keep it simple and align with Angular 20 best practices.
+**Decision:** Signals. This app has limited state complexity. Signals keep it simple and align with Angular 21 best practices.
 
 ### 2. AI Chat: Server-proxied streaming (not client-direct)
 

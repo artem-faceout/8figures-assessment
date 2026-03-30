@@ -8,7 +8,7 @@ Mobile-first AI portfolio companion app. Users view investment portfolio, chat w
 
 Monorepo with two workspaces:
 
-- `client/` — Angular 20 + Capacitor 6 + Ionic (mobile-first frontend)
+- `client/` — Angular 21 + Capacitor 8 + Ionic (mobile-first frontend)
 - `server/` — Lightweight API layer (FastAPI, Python 3.11+)
 
 ## How To Run

@@ -1,4 +1,4 @@
-# Client — Angular 21 + Capacitor 6 + Ionic
+# Client — Angular 21 + Capacitor 8 + Ionic
 
 ## Quick Start
 ```bash
