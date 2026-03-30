@@ -124,12 +124,24 @@ client/src/app/
 
 ## AI Agent Workflow
 
-Every feature goes through this pipeline:
+Every feature goes through a pipeline of **specialized agents** (`.claude/agents/`), each with a defined role, tool restrictions, and review scope. Commands (`.claude/commands/`) define the workflows; agents execute them.
+
+### Agent roster
+
+| Agent | Role | Tools | When |
+|-------|------|-------|------|
+| `prep-session` | Architecture — contracts, models, PRDs, parallel strategy | Read, Write, Edit, Grep, Glob, Bash | Before any feature work |
+| `feature-builder` | Implementation — TDD vertical slices from PRD | All | During feature development |
+| `code-reviewer` | Read-only senior review — patterns, architecture, perf | Read, Grep, Glob, Bash | After implementation |
+| `design-reviewer` | Read-only design review — Figma, tokens, mobile, formatting | Read, Grep, Glob, Bash | When UI changed |
+| `quality-gate` | Orchestrator — runs checks, delegates to reviewers, reports | Read, Grep, Glob, Bash, Agent | Before committing |
+| `debugger` | Diagnosis and fix — systematic root cause analysis | Read, Write, Edit, Grep, Glob, Bash | When something breaks |
 
 ### Multi-session model
-1. **Prep session** (`commands/prepare-feature.md`) — takes feature descriptions, produces API contract (`docs/api-contract.md`), data models (`docs/data-models.md`), and execution strategy (parallel vs sequential based on file overlap analysis)
-2. **Feature sessions** — one per feature, full vertical slice (server + client). User provides spec in chat, agent reads shared contracts. Each follows `commands/create-feature.md`
-3. **Parallel execution** — when prep session confirms safe via overlap matrix, features run in separate git worktrees. Merge order by dependency (least-dependent first)
+1. **Prep session** (`@prep-session` + `commands/prepare-feature.md`) — takes feature descriptions, produces API contract (`docs/api-contract.md`), data models (`docs/data-models.md`), and execution strategy (parallel vs sequential based on file overlap analysis)
+2. **Feature sessions** (`@feature-builder` + `commands/create-feature.md`) — one per feature, full vertical slice (server + client). Agent reads shared contracts and PRD, executes TDD slices.
+3. **Quality gate** (`@quality-gate` + `commands/post-feature.md`) — orchestrates `@code-reviewer` and `@design-reviewer` in parallel, runs automated checks, aggregates pass/fail verdict.
+4. **Parallel execution** — when prep session confirms safe via overlap matrix, feature builders run in separate git worktrees. Merge order by dependency (least-dependent first).
 
 Feature sessions must NOT modify contracts or touch files outside their assigned scope — if something is wrong, stop and flag it.
 
@@ -139,8 +151,32 @@ Feature sessions receive a finalized PRD from the prep session. The spec is alre
 
 1. **Confirm** — Read PRD + contracts, confirm understanding in 2-3 sentences, start immediately. DO NOT brainstorm, DO NOT create a new plan, DO NOT produce new spec documents.
 1. **Implement (TDD)** — RED: write failing test → GREEN: make it pass → REFACTOR: apply senior patterns. Per `skills/tdd-workflow.md`
-1. **Quality Gate** — Run `commands/post-feature.md`: tests, lint, types, build, senior review, architecture review, design review, visual snapshots
+1. **Quality Gate** — Invoke `@quality-gate` which runs `commands/post-feature.md`: tests, lint, types, build, then delegates to `@code-reviewer` and `@design-reviewer` in parallel
 1. **Verify** — All tests pass, build clean, runs in browser, types are strict
+
+### Agent delegation model
+
+```
+User describes feature
+        │
+        ▼
+  @prep-session ──────► docs/prd-*.md + contracts
+        │
+        ▼
+  @feature-builder ───► TDD implementation (per PRD)
+        │
+        ▼
+  @quality-gate ──┬──► automated checks (tests, lint, types, build)
+                  ├──► @code-reviewer (patterns, architecture, perf)
+                  ├──► @design-reviewer (Figma, tokens, mobile)
+                  └──► contract drift check
+                  │
+                  ▼
+            PASS / FAIL verdict
+        │
+        ▼
+  @debugger ◄──── (only if something breaks)
+```
 
 ### Superpowers skill overrides for feature sessions
 
