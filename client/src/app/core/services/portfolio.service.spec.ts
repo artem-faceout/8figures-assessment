@@ -36,6 +36,10 @@ describe('PortfolioService', () => {
     });
     service = TestBed.inject(PortfolioService);
     httpTesting = TestBed.inject(HttpTestingController);
+
+    // Flush the initial fetchPortfolio() call from constructor
+    const initReq = httpTesting.expectOne(r => r.url.includes('/api/v1/portfolio') && r.method === 'GET');
+    initReq.flush({ data: null, meta: { timestamp: '2026-03-30T10:00:00Z' } });
   });
 
   afterEach(() => {

@@ -31,6 +31,7 @@ export class PortfolioService {
 
   constructor() {
     this.loadFromStorage();
+    this.fetchPortfolio();
   }
 
   getHoldingByTicker(ticker: string): ApiHolding | undefined {
@@ -81,6 +82,27 @@ export class PortfolioService {
       });
   }
 
+  fetchPortfolio(): void {
+    this.http
+      .get<ApiResponse<ApiPortfolio>>(
+        `${environment.apiUrl}/api/v1/portfolio`
+      )
+      .pipe(map(res => res.data))
+      .subscribe({
+        next: portfolio => {
+          this._portfolio.set(portfolio);
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(portfolio));
+          } catch {
+            // Storage full or unavailable
+          }
+        },
+        error: () => {
+          // API failed — keep localStorage data if available
+        },
+      });
+  }
+
   setPortfolio(portfolio: ApiPortfolio): void {
     this._portfolio.set(portfolio);
     try {
@@ -90,7 +112,7 @@ export class PortfolioService {
     }
   }
 
-  loadFromStorage(): void {
+  private loadFromStorage(): void {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {

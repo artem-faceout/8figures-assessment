@@ -42,14 +42,31 @@ export class PortfolioSummaryComponent {
 
   isPositive = computed(() => this.portfolio().daily_change_percent >= 0);
 
+  private static readonly MIN_BAR_COUNT = 7;
+  private static readonly PLACEHOLDER_HEIGHTS = [20, 35, 15, 28, 22, 32, 18];
+
   barData = computed(() => {
     const holdings = this.portfolio().holdings ?? [];
     if (holdings.length === 0) return [];
     const maxVal = Math.max(...holdings.map(h => h.value));
-    return holdings.map(h => ({
+    const bars = holdings.map(h => ({
       ticker: h.ticker,
       heightPercent: maxVal > 0 ? (h.value / maxVal) * 100 : 0,
       isHighest: h.value === maxVal,
+      isPlaceholder: false,
     }));
+
+    // Pad with subtle placeholder bars so the chart always looks full
+    const needed = PortfolioSummaryComponent.MIN_BAR_COUNT - bars.length;
+    for (let i = 0; i < needed; i++) {
+      bars.push({
+        ticker: `_pad${i}`,
+        heightPercent: PortfolioSummaryComponent.PLACEHOLDER_HEIGHTS[i % PortfolioSummaryComponent.PLACEHOLDER_HEIGHTS.length],
+        isHighest: false,
+        isPlaceholder: true,
+      });
+    }
+
+    return bars;
   });
 }

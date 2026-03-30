@@ -32,15 +32,36 @@ function removeTourTargets(): void {
     .forEach(el => el.remove());
 }
 
+/**
+ * Flush the scheduled rect calculation.
+ * The component uses requestAnimationFrame + setTimeout(100ms).
+ * Jest fake timers handle setTimeout; we mock rAF to run callbacks immediately.
+ */
+async function flushRectCalculation(fixture: { detectChanges: () => void }): Promise<void> {
+  // Advance past rAF + 100ms delay + potential retries
+  jest.advanceTimersByTime(300);
+  fixture.detectChanges();
+  // Allow any promises to resolve
+  await Promise.resolve();
+  fixture.detectChanges();
+}
+
 describe('TourOverlayComponent', () => {
   let tourService: TourService;
 
   beforeEach(() => {
+    jest.useFakeTimers();
+    // Mock requestAnimationFrame to execute callback immediately via setTimeout(0)
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+      return setTimeout(cb, 0) as unknown as number;
+    });
     localStorage.clear();
     createTourTargets();
   });
 
   afterEach(() => {
+    jest.useRealTimers();
+    jest.restoreAllMocks();
     localStorage.clear();
     removeTourTargets();
   });
@@ -60,6 +81,7 @@ describe('TourOverlayComponent', () => {
     const { fixture } = await setup();
     tourService.start();
     fixture.detectChanges();
+    await flushRectCalculation(fixture);
 
     const tooltip = screen.getByRole('tooltip');
     expect(tooltip).toBeTruthy();
@@ -70,6 +92,7 @@ describe('TourOverlayComponent', () => {
     const { fixture } = await setup();
     tourService.start();
     fixture.detectChanges();
+    await flushRectCalculation(fixture);
 
     expect(screen.getByText('Next')).toBeTruthy();
   });
@@ -77,11 +100,15 @@ describe('TourOverlayComponent', () => {
   it('should show "Got it" button on the last step', async () => {
     const { fixture } = await setup();
     tourService.start();
+    fixture.detectChanges();
+    await flushRectCalculation(fixture);
+
     // Advance to last step
     for (let i = 0; i < TOUR_STEPS.length - 1; i++) {
       tourService.next();
+      fixture.detectChanges();
+      await flushRectCalculation(fixture);
     }
-    fixture.detectChanges();
 
     expect(screen.getByText('Got it')).toBeTruthy();
   });
@@ -90,9 +117,11 @@ describe('TourOverlayComponent', () => {
     const { fixture } = await setup();
     tourService.start();
     fixture.detectChanges();
+    await flushRectCalculation(fixture);
 
     screen.getByText('Next').click();
     fixture.detectChanges();
+    await flushRectCalculation(fixture);
 
     expect(tourService.currentStep()).toBe(1);
     expect(screen.getByRole('tooltip').textContent).toContain(
@@ -103,10 +132,14 @@ describe('TourOverlayComponent', () => {
   it('should dismiss tour when Got it button is clicked', async () => {
     const { fixture } = await setup();
     tourService.start();
+    fixture.detectChanges();
+    await flushRectCalculation(fixture);
+
     for (let i = 0; i < TOUR_STEPS.length - 1; i++) {
       tourService.next();
+      fixture.detectChanges();
+      await flushRectCalculation(fixture);
     }
-    fixture.detectChanges();
 
     screen.getByText('Got it').click();
     fixture.detectChanges();
@@ -122,15 +155,23 @@ describe('TourOverlayComponent', () => {
     const { fixture } = await setup();
     tourService.start();
     fixture.detectChanges();
+    await flushRectCalculation(fixture);
 
     // Step 0 should work fine (portfolio-summary exists)
     expect(screen.getByRole('tooltip').textContent).toContain(
       TOUR_STEPS[0].text
     );
 
-    // Advance -- step 1 target is missing, should skip to step 2
+    // Advance -- step 1 target is missing, should skip to step 2 after retries
     screen.getByText('Next').click();
     fixture.detectChanges();
+    // Need extra time for retry logic (up to 3 retries * 200ms * retryCount)
+    jest.advanceTimersByTime(2000);
+    fixture.detectChanges();
+    await Promise.resolve();
+    fixture.detectChanges();
+    // Flush the scheduled calculation for the skipped-to step
+    await flushRectCalculation(fixture);
 
     expect(tourService.currentStep()).toBe(2);
     expect(screen.getByRole('tooltip').textContent).toContain(
@@ -142,6 +183,7 @@ describe('TourOverlayComponent', () => {
     const { fixture } = await setup();
     tourService.start();
     fixture.detectChanges();
+    await flushRectCalculation(fixture);
 
     const tooltip = screen.getByRole('tooltip');
     expect(tooltip.getAttribute('aria-live')).toBe('polite');
@@ -151,12 +193,14 @@ describe('TourOverlayComponent', () => {
     const { fixture } = await setup();
     tourService.start();
     fixture.detectChanges();
+    await flushRectCalculation(fixture);
 
     const backdrop = fixture.nativeElement.querySelector(
       '.tour-backdrop'
     ) as HTMLElement;
     backdrop.click();
     fixture.detectChanges();
+    await flushRectCalculation(fixture);
 
     expect(tourService.currentStep()).toBe(1);
   });
@@ -165,6 +209,7 @@ describe('TourOverlayComponent', () => {
     const { fixture } = await setup();
     tourService.start();
     fixture.detectChanges();
+    await flushRectCalculation(fixture);
 
     const backdrop = fixture.nativeElement.querySelector(
       '.tour-backdrop'
@@ -178,6 +223,11 @@ describe('TourOverlayComponent', () => {
 
     const { fixture } = await setup();
     tourService.start();
+    fixture.detectChanges();
+    // Need extra time for retry logic on all steps
+    jest.advanceTimersByTime(5000);
+    fixture.detectChanges();
+    await Promise.resolve();
     fixture.detectChanges();
 
     expect(tourService.tourActive()).toBe(false);

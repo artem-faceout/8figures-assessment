@@ -79,7 +79,9 @@ export class TourOverlayComponent {
       const active = this.tourService.tourActive();
       const step = this.tourService.currentStep();
       if (active) {
-        this.calculateRect(step);
+        // Wait for DOM to settle before measuring positions
+        // requestAnimationFrame ensures layout is complete after render
+        this.scheduleRectCalculation(step);
       }
     });
 
@@ -90,7 +92,7 @@ export class TourOverlayComponent {
       }
       this.resizeTimeout = setTimeout(() => {
         if (this.tourService.tourActive()) {
-          this.calculateRect(this.tourService.currentStep());
+          this.calculateRect(this.tourService.currentStep(), 0);
         }
       }, 150);
     };
@@ -102,6 +104,9 @@ export class TourOverlayComponent {
       }
       if (this.resizeTimeout) {
         clearTimeout(this.resizeTimeout);
+      }
+      if (this.rectCalcTimeout) {
+        clearTimeout(this.rectCalcTimeout);
       }
     });
   }
@@ -115,18 +120,55 @@ export class TourOverlayComponent {
     this.tourService.next();
   }
 
-  private calculateRect(stepIndex: number): void {
+  private rectCalcTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  /**
+   * Schedule rect calculation after DOM settles.
+   * Uses requestAnimationFrame + a small delay to ensure Ionic's
+   * ion-content and async-loaded elements have finished layout.
+   */
+  private scheduleRectCalculation(stepIndex: number): void {
+    if (this.rectCalcTimeout) {
+      clearTimeout(this.rectCalcTimeout);
+    }
+    // Wait one frame + 100ms for Ionic content to finalize layout
+    requestAnimationFrame(() => {
+      this.rectCalcTimeout = setTimeout(() => {
+        this.calculateRect(stepIndex, 0);
+      }, 100);
+    });
+  }
+
+  private calculateRect(stepIndex: number, retryCount: number): void {
     const step = TOUR_STEPS[stepIndex];
     if (!step) return;
 
     const el = document.querySelector(`[data-tour="${step.target}"]`);
     if (!el) {
-      // Target not found -- skip this step
+      // Retry up to 3 times with increasing delay for async content
+      if (retryCount < 3) {
+        this.rectCalcTimeout = setTimeout(() => {
+          this.calculateRect(stepIndex, retryCount + 1);
+        }, 200 * (retryCount + 1));
+        return;
+      }
+      // Target not found after retries -- skip this step
       this.skipToNextAvailableStep(stepIndex);
       return;
     }
 
     const domRect = el.getBoundingClientRect();
+
+    // Validate that the rect has non-zero dimensions (element is rendered)
+    if (domRect.width === 0 || domRect.height === 0) {
+      if (retryCount < 3) {
+        this.rectCalcTimeout = setTimeout(() => {
+          this.calculateRect(stepIndex, retryCount + 1);
+        }, 200 * (retryCount + 1));
+        return;
+      }
+    }
+
     this.targetRect.set({
       top: domRect.top,
       left: domRect.left,

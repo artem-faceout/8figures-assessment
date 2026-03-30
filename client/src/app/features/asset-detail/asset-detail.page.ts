@@ -171,10 +171,9 @@ export class AssetDetailPage implements OnInit {
     if (!h) return;
     this.router.navigate(['/chat'], {
       state: {
-        chatConfig: {
-          mode: 'asset',
-          asset: { ticker: h.ticker, name: h.name },
-        },
+        mode: 'asset',
+        persona: 'experienced',
+        asset: { ticker: h.ticker, name: h.name },
       },
     });
   }

@@ -85,7 +85,7 @@
 .message-list {
   flex: 1;
   overflow-y: auto;
-  padding: calc(64px + env(safe-area-inset-top) + 32px) 16px 128px;
+  padding: calc(64px + env(safe-area-inset-top) + 32px) 16px 200px;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
 
@@ -300,10 +300,11 @@
   border-radius: 9999px;
   padding: 18px 25px;
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: 16px; // Prevents iOS auto-zoom on focus (< 16px triggers zoom)
   color: var(--color-text-primary);
   outline: none;
   -webkit-appearance: none;
+  touch-action: manipulation;
 
   &::placeholder {
     color: rgba(163, 141, 123, 0.5);

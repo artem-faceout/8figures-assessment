@@ -46,12 +46,18 @@ describe('PortfolioSummaryComponent', () => {
     expect(screen.getByText('+0.67%')).toBeTruthy();
   });
 
-  it('should render bar chart bars for each holding', async () => {
+  it('should render bar chart bars for each holding plus placeholders', async () => {
     const { container } = await render(PortfolioSummaryComponent, {
       inputs: { portfolio: mockPortfolio },
     });
-    const bars = container.querySelectorAll('.bar');
-    expect(bars.length).toBe(2);
+    const columns = container.querySelectorAll('.bar-column');
+    // 2 real + 5 placeholder (padded to minimum of 7)
+    expect(columns.length).toBe(7);
+    const placeholders = container.querySelectorAll('.bar-column.bar-placeholder');
+    expect(placeholders.length).toBe(5);
+    // Real bars should have ticker labels
+    const labels = container.querySelectorAll('.bar-label');
+    expect(labels.length).toBe(2);
   });
 
   it('should show gain styling for positive change', async () => {

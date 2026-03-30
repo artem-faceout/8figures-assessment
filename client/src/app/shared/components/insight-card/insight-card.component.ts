@@ -7,7 +7,7 @@ import {
   IonSkeletonText,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { sparkles, chevronForward } from 'ionicons/icons';
+import { sparkles } from 'ionicons/icons';
 import type { ApiPortfolioInsight } from '@app/core/models/portfolio.model';
 
 @Component({
@@ -30,6 +30,6 @@ export class InsightCardComponent {
   error = input(false);
 
   constructor() {
-    addIcons({ sparkles, chevronForward });
+    addIcons({ sparkles });
   }
 }

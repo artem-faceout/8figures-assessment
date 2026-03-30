@@ -49,10 +49,11 @@ export class DashboardPage implements OnInit {
     addIcons({ sparkles });
 
     // Start tour when portfolio becomes available and tour hasn't been completed
+    // Delay start to ensure DOM elements have rendered and ion-content has laid out
     effect(() => {
       const portfolio = this.portfolioService.portfolio();
       if (portfolio && this.tourService.shouldShowTour() && !this.tourService.tourActive()) {
-        this.tourService.start();
+        setTimeout(() => this.tourService.start(), 500);
       }
     });
   }
@@ -66,6 +67,11 @@ export class DashboardPage implements OnInit {
   }
 
   onFabTap(): void {
-    this.router.navigate(['/chat']);
+    this.router.navigate(['/chat'], {
+      state: {
+        mode: 'common',
+        persona: 'experienced',
+      },
+    });
   }
 }

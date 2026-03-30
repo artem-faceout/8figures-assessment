@@ -13,6 +13,7 @@
   overflow: hidden;
   background: var(--color-background-alt);
   padding: 0 2rem;
+  padding-top: env(safe-area-inset-top);
 }
 
 .content {
@@ -63,7 +64,7 @@
 }
 
 .footer {
-  padding-bottom: 2rem;
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
   z-index: 1;
 }
 

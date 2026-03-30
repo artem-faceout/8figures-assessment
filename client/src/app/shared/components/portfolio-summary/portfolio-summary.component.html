@@ -13,11 +13,16 @@
 
     <div class="bar-chart">
       @for (bar of barData(); track bar.ticker) {
-        <div
-          class="bar"
-          [class.bar-highlight]="bar.isHighest"
-          [style.height.%]="bar.heightPercent"
-        ></div>
+        <div class="bar-column" [class.bar-placeholder]="bar.isPlaceholder">
+          <div
+            class="bar"
+            [class.bar-highlight]="bar.isHighest"
+            [style.height.%]="bar.heightPercent"
+          ></div>
+          @if (!bar.isPlaceholder) {
+            <span class="bar-label">{{ bar.ticker }}</span>
+          }
+        </div>
       }
     </div>
   </ion-card-content>

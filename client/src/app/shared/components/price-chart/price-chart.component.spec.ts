@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/angular';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { PriceChartComponent } from './price-chart.component';
 import type { ApiPricePoint } from '@app/core/models/portfolio.model';
 
@@ -13,6 +14,7 @@ describe('PriceChartComponent', () => {
   it('should render SVG path with data', async () => {
     const { container } = await render(PriceChartComponent, {
       inputs: { points: mockPoints, loading: false, error: false },
+      providers: [provideNoopAnimations()],
     });
     const path = container.querySelector('path[stroke]');
     expect(path).toBeTruthy();
@@ -22,6 +24,7 @@ describe('PriceChartComponent', () => {
   it('should show skeleton when loading', async () => {
     const { container } = await render(PriceChartComponent, {
       inputs: { points: [], loading: true, error: false },
+      providers: [provideNoopAnimations()],
     });
     expect(container.querySelector('ion-skeleton-text')).toBeTruthy();
   });
@@ -29,6 +32,7 @@ describe('PriceChartComponent', () => {
   it('should show error state', async () => {
     await render(PriceChartComponent, {
       inputs: { points: [], loading: false, error: true },
+      providers: [provideNoopAnimations()],
     });
     expect(screen.getByText('Unable to load chart')).toBeTruthy();
   });
@@ -40,6 +44,7 @@ describe('PriceChartComponent', () => {
         loading: false,
         error: false,
       },
+      providers: [provideNoopAnimations()],
     });
     expect(container.querySelector('svg')).toBeFalsy();
   });

@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular/standalone';
+import { Location } from '@angular/common';
 import { ChatService } from '@app/core/services/chat.service';
 import { OnboardingService } from '@app/core/services/onboarding.service';
 import { PortfolioService } from '@app/core/services/portfolio.service';
@@ -38,7 +38,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewChecked {
   private readonly portfolioService = inject(PortfolioService);
   private readonly onboardingService = inject(OnboardingService);
   private readonly router = inject(Router);
-  private readonly modalController = inject(ModalController);
+  private readonly location = inject(Location);
 
   // Modal input — used when opened as modal (common/asset mode)
   readonly config = input<ChatConfig | undefined>(undefined);
@@ -103,8 +103,10 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     if (!this.resolvedConfig) {
+      // Default to common mode — onboarding mode is only set explicitly from the onboarding flow
+      const isOnboarded = this.onboardingService.isComplete();
       this.resolvedConfig = {
-        mode: 'onboarding',
+        mode: isOnboarded ? 'common' : 'onboarding',
         persona: this.onboardingService.investmentProfile() ?? 'beginner',
       };
     }
@@ -141,7 +143,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewChecked {
 
   onBack(): void {
     if (this.isModal()) {
-      this.modalController.dismiss();
+      this.location.back();
     } else {
       this.router.navigate(['/onboarding']);
     }

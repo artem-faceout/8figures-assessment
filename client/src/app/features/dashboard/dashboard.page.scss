@@ -4,6 +4,7 @@
 
 .dashboard-scroll {
   padding: 1rem 1rem 0;
+  padding-top: calc(1rem + env(safe-area-inset-top));
 }
 
 .holdings-header {
@@ -22,16 +23,12 @@
   margin: 0;
 }
 
-.view-all {
-  font-family: var(--font-heading);
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  color: var(--color-accent);
-  text-transform: uppercase;
-}
-
 .bottom-spacer {
   height: 5rem;
+}
+
+ion-fab {
+  margin-bottom: 1rem; // 16px bottom padding for the magic button
 }
 
 .chat-fab {

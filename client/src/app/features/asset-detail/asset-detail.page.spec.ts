@@ -4,6 +4,7 @@ import {
   provideHttpClientTesting,
   HttpTestingController,
 } from '@angular/common/http/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
@@ -47,6 +48,7 @@ describe('AssetDetailPage', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
+        provideNoopAnimations(),
         provideRouter([
           { path: 'dashboard', component: AssetDetailPage },
           { path: 'chat', component: AssetDetailPage },

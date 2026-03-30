@@ -37,10 +37,16 @@ const defaultProviders = [
 
 describe('DashboardPage', () => {
   beforeEach(() => {
+    jest.useFakeTimers();
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+      return setTimeout(cb, 0) as unknown as number;
+    });
     localStorage.clear();
   });
 
   afterEach(() => {
+    jest.useRealTimers();
+    jest.restoreAllMocks();
     localStorage.clear();
   });
 
@@ -54,7 +60,7 @@ describe('DashboardPage', () => {
     fixture.detectChanges();
 
     expect(screen.getByText('$47,230')).toBeTruthy();
-    expect(screen.getByText('AAPL')).toBeTruthy();
+    expect(screen.getAllByText('AAPL').length).toBeGreaterThan(0);
     expect(screen.getByText('HOLDINGS')).toBeTruthy();
   });
 
@@ -81,6 +87,9 @@ describe('DashboardPage', () => {
       const tourService = fixture.debugElement.injector.get(TourService);
 
       portfolioService.setPortfolio(mockPortfolio);
+      fixture.detectChanges();
+      // Tour start is delayed by 500ms to allow DOM to settle
+      jest.advanceTimersByTime(600);
       fixture.detectChanges();
 
       // Tour should have started
@@ -123,6 +132,24 @@ describe('DashboardPage', () => {
       const portfolioService =
         fixture.debugElement.injector.get(PortfolioService);
       portfolioService.setPortfolio(mockPortfolio);
+      fixture.detectChanges();
+
+      // Mock getBoundingClientRect on data-tour elements (JSDOM returns all zeros)
+      document.querySelectorAll('[data-tour]').forEach(el => {
+        (el as HTMLElement).getBoundingClientRect = () => ({
+          top: 100, left: 20, bottom: 160, right: 340,
+          width: 320, height: 60, x: 20, y: 100,
+          toJSON: () => ({}),
+        });
+      });
+
+      // Tour start delayed by 500ms
+      jest.advanceTimersByTime(600);
+      fixture.detectChanges();
+      // Tour overlay is now rendered; its effect schedules rect calc (rAF + 100ms)
+      jest.advanceTimersByTime(300);
+      fixture.detectChanges();
+      await Promise.resolve();
       fixture.detectChanges();
 
       // The tour overlay component should render a tooltip
