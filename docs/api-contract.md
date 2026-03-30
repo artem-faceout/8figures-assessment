@@ -331,4 +331,13 @@ Client parses and strips this from the displayed message, extracts the JSON, and
 
 ---
 
+## Dashboard Guided Tour Feature
+
+**No new endpoints.** The guided tour is entirely client-side:
+- Tour step progression managed by Angular Signals in `TourService`
+- Tour completion persisted via `localStorage` (key `8f_tour_completed`)
+- No server-side data, no API calls
+
+---
+
 *This file is updated by the prep session before client/server sessions begin.*

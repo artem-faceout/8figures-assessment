@@ -1,0 +1,25 @@
+@if (tourService.tourActive() && targetRect()) {
+  <div
+    class="tour-backdrop"
+    [style.clip-path]="clipPath()"
+    role="presentation"
+    (click)="onBackdropClick()"
+  ></div>
+
+  <div
+    class="tour-tooltip"
+    [class.tour-tooltip--above]="caretPosition() === 'above'"
+    [class.tour-tooltip--below]="caretPosition() === 'below'"
+    [style]="tooltipStyle()"
+    role="tooltip"
+    aria-live="polite"
+  >
+    <p class="tour-tooltip__text">{{ tourService.currentStepConfig().text }}</p>
+    <button
+      class="tour-tooltip__action"
+      (click)="onActionClick($event)"
+    >
+      {{ tourService.isLastStep() ? 'Got it' : 'Next' }}
+    </button>
+  </div>
+}

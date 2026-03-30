@@ -226,4 +226,37 @@ Wraps all successful responses (see `skills/api-contract-patterns.md`):
 
 ---
 
+## Dashboard Guided Tour (Client-Only)
+
+**These models have NO server-side Pydantic equivalents.** They are client-only types defined in `core/models/tour.model.ts`. Documented here for cross-session reference.
+
+#### TourStep
+
+**Description:** Configuration for a single tour step. Defines which element to highlight and what to show.
+
+| Field | Type | Required | Validation | Description |
+|---|---|---|---|---|
+| target | string | yes | non-empty | Value of `data-tour` attribute on the target element |
+| text | string | yes | non-empty | Tooltip body text shown to the user |
+| position | `'above'` \| `'below'` | yes | enum | Tooltip placement relative to the highlighted element |
+
+#### TourConfig (constant)
+
+**Description:** Ordered array of `TourStep` defining the full tour sequence. Hardcoded, not user-configurable.
+
+| Index | Target | Position |
+|---|---|---|
+| 0 | `portfolio-summary` | below |
+| 1 | `insight-card` | below |
+| 2 | `holding-row` | below |
+| 3 | `chat-fab` | above |
+
+#### StorageKeys (additions)
+
+| Key | Value Type | Description |
+|---|---|---|
+| `8f_tour_completed` | `'true'` \| absent | Tour finished flag (localStorage) |
+
+---
+
 *This file is updated by the prep session before client/server sessions begin.*

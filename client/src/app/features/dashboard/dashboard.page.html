@@ -1,12 +1,16 @@
 <ion-content class="dashboard-content" [fullscreen]="true">
   @if (portfolioService.portfolio(); as portfolio) {
     <div class="dashboard-scroll">
-      <app-portfolio-summary [portfolio]="portfolio" />
+      <app-portfolio-summary
+        [portfolio]="portfolio"
+        data-tour="portfolio-summary"
+      />
 
       <app-insight-card
         [insight]="portfolioService.insight()"
         [loading]="portfolioService.insightLoading()"
         [error]="portfolioService.insightError()"
+        data-tour="insight-card"
       />
 
       <div class="holdings-header">
@@ -14,9 +18,10 @@
         <span class="view-all">VIEW ALL</span>
       </div>
 
-      @for (holding of portfolio.holdings; track holding.ticker) {
+      @for (holding of portfolio.holdings; track holding.ticker; let first = $first) {
         <app-holding-row
           [holding]="holding"
+          [attr.data-tour]="first ? 'holding-row' : null"
           (tapped)="onHoldingTap($event)"
         />
       }
@@ -31,8 +36,12 @@
   }
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="center">
-    <ion-fab-button class="chat-fab" (click)="onFabTap()">
+    <ion-fab-button class="chat-fab" data-tour="chat-fab" (click)="onFabTap()">
       <ion-icon name="sparkles"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>
+
+@if (tourService.tourActive()) {
+  <app-tour-overlay />
+}
